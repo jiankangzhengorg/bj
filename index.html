@@ -3,21 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Shukeyun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
-    <!-- 配置Tailwind自定义颜色和字体 -->
+    <!-- 配置Tailwind自定义颜色 -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
+                        // 配色方案1：蓝色系
                         primary: '#3B82F6',
+                        primaryLight: '#93C5FD',
+                        primaryDark: '#1D4ED8',
+                        
+                        // 配色方案2：绿色系
                         secondary: '#10B981',
-                        accent: '#8B5CF6',
-                        dark: '#1E293B',
-                        light: '#F8FAFC'
+                        secondaryLight: '#A7F3D0',
+                        secondaryDark: '#059669',
+                        
+                        // 配色方案3：紫色系
+                        tertiary: '#8B5CF6',
+                        tertiaryLight: '#C4B5FD',
+                        tertiaryDark: '#5B21B6',
+                        
+                        // 配色方案4：红色系
+                        quaternary: '#EF4444',
+                        quaternaryLight: '#FECACA',
+                        quaternaryDark: '#DC2626',
+                        
+                        // 配色方案5：橙色系
+                        quinary: '#F97316',
+                        quinaryLight: '#FFEDD5',
+                        quinaryDark: '#EA580C',
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -29,139 +48,194 @@
     
     <style type="text/tailwindcss">
         @layer utilities {
-            .btn-hover {
-                @apply transition-all duration-300 transform hover:scale-105 hover:shadow-lg active:scale-95;
+            .card-shadow {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             }
-            .card-effect {
-                @apply bg-white dark:bg-dark rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl;
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+            }
+            .color-transition {
+                transition: background-color 0.4s ease, color 0.4s ease;
+            }
+            .card-standard {
+                /* 统一卡片尺寸 */
+                min-height: 180px;
+            }
+            .card-link {
+                /* 链接样式，使整个卡片可点击 */
+                display: block;
+                width: 100%;
+                height: 100%;
+                text-decoration: none;
+                color: inherit;
+            }
+            .card-content {
+                /* 确保内容垂直居中且文本对齐 */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                height: 100%;
             }
         }
     </style>
 </head>
-
-<body class="bg-gradient-to-br from-light to-gray-100 dark:from-gray-900 dark:to-dark min-h-screen font-sans text-gray-800 dark:text-gray-100">
-    <!-- 顶部导航 -->
-    <header class="container mx-auto px-4 py-6">
-        <div class="flex justify-between items-center">
-            <h1 class="text-[clamp(1.5rem,5vw,2.5rem)] font-bold text-primary">
-                <i class="fa fa-link mr-2"></i>Spare Interface
-            </h1>
-            <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                <i class="fa fa-moon-o dark:hidden text-xl"></i>
-                <i class="fa fa-sun-o hidden dark:block text-xl"></i>
-            </button>
-        </div>
-    </header>
-
-    <!-- 主内容区 -->
-    <main class="container mx-auto px-4 pb-16">
-        <!-- 分类标题 -->
-        <div class="mb-8">
-            <h2 class="text-[clamp(1.2rem,3vw,1.8rem)] font-semibold mb-2">ShukeyunduanAPP正式上线</h2>
-            <p class="text-gray-600 dark:text-gray-400">我们希望用良好的服务来取得用户的青睐！强大的更新迭代能力，不死稳定的域名防护，是您提高生产力的最佳选择。</p>
+<body class="bg-gray-50 min-h-screen font-sans flex flex-col items-center justify-center p-4 py-12">
+    <div class="container max-w-5xl w-full">
+        <!-- 标题区域 -->
+        <div class="text-center mb-10">
+            <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold text-gray-800 mb-2">我们希望用良好的服务获取用户的青睐</h1>
+            <p class="text-gray-600 max-w-xl mx-auto">Shukeyun2025</p>
+            
+            <!-- 颜色切换按钮 -->
+            <div class="flex justify-center gap-3 mt-6 flex-wrap">
+                <button data-color="primary" class="w-8 h-8 rounded-full bg-primary border-2 border-white shadow-md color-btn active"></button>
+                <button data-color="secondary" class="w-8 h-8 rounded-full bg-secondary border-2 border-white shadow-md color-btn"></button>
+                <button data-color="tertiary" class="w-8 h-8 rounded-full bg-tertiary border-2 border-white shadow-md color-btn"></button>
+                <button data-color="quaternary" class="w-8 h-8 rounded-full bg-quaternary border-2 border-white shadow-md color-btn"></button>
+                <button data-color="quinary" class="w-8 h-8 rounded-full bg-quinary border-2 border-white shadow-md color-btn"></button>
+            </div>
         </div>
         
-        <!-- 按钮网格 -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            <!-- 按钮1 -->
-            <a href="http://dqcp7fhz.svipcdn.cn/www43136177" target="_blank" class="card-effect">
-                <div class="p-6 flex flex-col items-center justify-center btn-hover">
-                    <div class="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mb-4">
-                        <i class="fa fa-search text-2xl text-blue-600 dark:text-blue-300"></i>
+        <!-- 居中卡片导航区域 - 元素完美对齐 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            <!-- 卡片1 -->
+            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+                <a href="http://dqcp7fhz.svipcdn.cn/www43136177" class="card-link">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
+                            <i class="fa fa-home text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">网页版</h3>
+                        <p class="text-gray-600 text-sm">路径1</p>
                     </div>
-                    <h3 class="text-lg font-medium mb-1">接口1</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">点击进入【网页版】</p>
-                </div>
-            </a>
+                </a>
+            </div>
             
-            <!-- 按钮2 -->
-            <a href="http://xtvyrj2h.svipcdn.cn/www43136177/login" target="_blank" class="card-effect">
-                <div class="p-6 flex flex-col items-center justify-center btn-hover">
-                    <div class="w-14 h-14 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center mb-4">
-                        <i class="fa fa-play-circle text-2xl text-pink-600 dark:text-pink-300"></i>
+            <!-- 卡片2 -->
+            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+                <a href="http://xtvyrj2h.svipcdn.cn/www43136177" class="card-link">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
+                            <i class="fa fa-compass text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">网页版</h3>
+                        <p class="text-gray-600 text-sm">路径2</p>
                     </div>
-                    <h3 class="text-lg font-medium mb-1">接口2</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">点击进入【网页版】</p>
-                </div>
-            </a>
-            <!-- <!-- 按钮2.5 -->
-            <a href="https://wwrl.lanzouu.com/iN0R537quddi" target="_blank" class="card-effect">
-                <div class="p-6 flex flex-col items-center justify-center btn-hover">
-                    <div class="w-14 h-14 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center mb-4">
-                        <i class="fa fa-play-circle text-2xl text-pink-600 dark:text-pink-300"></i>
-                    </div>
-                    <h3 class="text-lg font-medium mb-1">安卓版【享独立线路】</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">点击进入下载安装包</p>
-                </div>
-            </a> -->
-             <!-- <!-- 按钮2.6 -->
-            <a href="" target="_blank" class="card-effect">
-                <div class="p-6 flex flex-col items-center justify-center btn-hover">
-                    <div class="w-14 h-14 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center mb-4">
-                        <i class="fa fa-play-circle text-2xl text-pink-600 dark:text-pink-300"></i>
-                    </div>
-                    <h3 class="text-lg font-medium mb-1">IOS版【享独立线路】【开发中】</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">点击进入下载安装包</p>
-                </div>
-            </a> -->
+                </a>
+            </div>
             
-            <!-- 按钮3 -->
-            <!-- 修改后的官方TG频道卡片 -->
-<a href="https://t.me/gm555333" target="_blank" class="card-effect">
-    <div class="p-6 flex flex-col items-center justify-center btn-hover">
-        <div class="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mb-4">
-            <i class="fa fa-telegram text-2xl text-blue-600 dark:text-blue-300"></i>
+            <!-- 卡片3 -->
+            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+                <a href="https://wwrl.lanzouu.com/iN0R537quddi" class="card-link">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
+                            <i class="fa fa-plus text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">安卓APK（独享）</h3>
+                        <p class="text-gray-600 text-sm">点击下载</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- 卡片4 -->
+            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+                <a href="bookmarks.html" class="card-link">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
+                            <i class="fa fa-bookmark text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">IOS安装包</h3>
+                        <p class="text-gray-600 text-sm">即将发布</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- 卡片5 -->
+            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+                <a href="https://t.me/gm555333" class="card-link">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
+                            <i class="fa fa-user text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">TG官方频道</h3>
+                        <p class="text-gray-600 text-sm">需🪜才能进</p>
+                    </div>
+                </a>
+            </div>
         </div>
-        <h3 class="text-lg font-medium mb-1">官方TG频道/需🪜</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400">点击进入</p>
     </div>
-</a>
-            
-            
-
-    <!-- 页脚 -->
-    <footer class="bg-white/80 dark:bg-dark/80 backdrop-blur-md py-4 fixed bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-800">
-        <div class="container mx-auto px-4 text-center text-sm text-gray-500 dark:text-gray-400">
-            <p>© 2025 快速访问 | 点击按钮跳转</p>
-        </div>
-    </footer>
 
     <script>
-        // 深色模式切换
-        const themeToggle = document.getElementById('theme-toggle');
-        
-        // 检查用户偏好或本地存储的主题设置
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-        
-        // 切换主题
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
+        // 颜色切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const colorButtons = document.querySelectorAll('.color-btn');
+            const iconContainers = document.querySelectorAll('.card .w-12');
+            const cardTitles = document.querySelectorAll('.card h3');
             
-            // 保存主题偏好
-            if (document.documentElement.classList.contains('dark')) {
-                localStorage.theme = 'dark';
-            } else {
-                localStorage.theme = 'light';
+            // 设置初始颜色
+            let currentColor = 'primary';
+            
+            // 为每个颜色按钮添加点击事件
+            colorButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的激活状态
+                    colorButtons.forEach(btn => btn.classList.remove('active', 'ring-2', 'ring-offset-2'));
+                    
+                    // 添加当前按钮的激活状态
+                    this.classList.add('active', 'ring-2', 'ring-offset-2');
+                    this.classList.add(`ring-${this.dataset.color}`);
+                    
+                    // 更新当前颜色
+                    currentColor = this.dataset.color;
+                    
+                    // 更新所有卡片的颜色
+                    updateCardColors(currentColor);
+                });
+            });
+            
+            // 设置初始激活状态
+            document.querySelector(`[data-color="${currentColor}"]`).classList.add('active', 'ring-2', `ring-${currentColor}`, 'ring-offset-2');
+            
+            // 更新卡片颜色的函数
+            function updateCardColors(color) {
+                // 移除所有颜色类
+                iconContainers.forEach(icon => {
+                    icon.className = icon.className.replace(/bg-\w+Light|text-\w+/g, '');
+                    icon.classList.add(`bg-${color}Light`, `text-${color}`);
+                });
+                
+                cardTitles.forEach(title => {
+                    title.className = title.className.replace(/text-\w+Dark/g, '');
+                    title.classList.add(`text-${color}Dark`);
+                });
             }
-        });
-        
-        // 添加页面加载动画
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.card-effect').forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, 100 * index);
+            
+            // 为卡片链接添加点击效果
+            document.querySelectorAll('.card-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // 添加点击动画
+                    const card = this.closest('.card');
+                    card.classList.add('scale-95');
+                    setTimeout(() => {
+                        card.classList.remove('scale-95');
+                    }, 150);
+                    
+                    // 可以在这里添加自定义跳转逻辑
+                    const cardName = this.querySelector('h3').textContent;
+                    console.log(`点击了${cardName}卡片，链接地址：${this.href}`);
+                    
+                    // 如果需要阻止默认跳转行为，可以取消下面这行的注释
+                    // e.preventDefault();
+                });
             });
         });
     </script>
 </body>
 </html>
-</body>
-
-</html>
+    
 
