@@ -49,23 +49,22 @@
     <style type="text/tailwindcss">
         @layer utilities {
             .card-shadow {
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                box-shadow: 0 3px 15px rgba(0, 0, 0, 0.07);
             }
             .card-hover {
                 transition: all 0.3s ease;
             }
             .card-hover:hover {
-                transform: translateY(-5px);
+                transform: translateY(-3px);
             }
             .color-transition {
-                transition: background-color 0.4s ease, color 0.4s ease;
+                transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
             }
             .card-standard {
-                /* 统一卡片尺寸 */
-                min-height: 180px;
+                /* 更紧凑的卡片尺寸 */
+                min-height: 120px;
             }
             .card-link {
-                /* 链接样式，使整个卡片可点击 */
                 display: block;
                 width: 100%;
                 height: 100%;
@@ -73,7 +72,6 @@
                 color: inherit;
             }
             .card-content {
-                /* 确保内容垂直居中且文本对齐 */
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -81,115 +79,304 @@
                 text-align: center;
                 height: 100%;
             }
+            .password-modal {
+                backdrop-filter: blur(5px);
+            }
+            .icon-container {
+                transition: transform 0.3s ease;
+            }
+            .card-hover:hover .icon-container {
+                transform: scale(1.08);
+            }
+            .badge {
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                transform: rotate(0deg);
+                animation: pulse 2s infinite;
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            /* 流光字体效果 */
+            .流光字体 {
+                background: linear-gradient(90deg, #3B82F6, #8B5CF6, #10B981, #F97316, #EF4444);
+                background-size: 300% 300%;
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                animation: flow 8s ease infinite;
+                display: inline-block;
+                font-weight: bold;
+            }
+            @keyframes flow {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            /* 左上角勾选框样式 */
+            .top-checkbox {
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                z-index: 10;
+            }
+            /* 安全运行时间样式 */
+            .uptime-display {
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+                font-size: 0.875rem;
+                font-family: monospace;
+                /* 限制最大宽度与颜色按钮区域匹配 */
+                max-width: 210px;
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen font-sans flex flex-col items-center justify-center p-4 py-12">
-    <div class="container max-w-5xl w-full">
+<body class="bg-gray-50 min-h-screen font-sans flex flex-col items-center justify-center p-3 py-8 relative">
+    <!-- 左上角勾选框（仅保留开关，无文字） -->
+    <div class="top-checkbox">
+        <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="showExtraCard" class="sr-only peer">
+            <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+        </label>
+    </div>
+
+    <div class="container max-w-6xl w-full">
         <!-- 标题区域 -->
-        <div class="text-center mb-10">
-            <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold text-gray-800 mb-2">我们希望用良好的服务获取用户的青睐</h1>
-            <p class="text-gray-600 max-w-xl mx-auto">Shukeyun2025</p>
+        <div class="text-center mb-6">
+            <h1 class="text-[clamp(1.3rem,3vw,1.8rem)] font-bold text-gray-800 mb-2">创新-高速-稳定-为了顾客而存在</h1>
+            <p class="text-gray-600 max-w-xl mx-auto text-sm mb-4">
+                <span class="流光字体">Shukeyun2025-携手继续前行，熬过寒冬，迎接春夏</span>
+            </p>
+            
+            <!-- 安全运行时间显示 - 独立换行显示 -->
+            <div class="uptime-display bg-white card-shadow color-transition mb-4">
+                已经陪伙伴们: <span id="uptime" class="font-semibold"></span>
+            </div>
             
             <!-- 颜色切换按钮 -->
-            <div class="flex justify-center gap-3 mt-6 flex-wrap">
-                <button data-color="primary" class="w-8 h-8 rounded-full bg-primary border-2 border-white shadow-md color-btn active"></button>
-                <button data-color="secondary" class="w-8 h-8 rounded-full bg-secondary border-2 border-white shadow-md color-btn"></button>
-                <button data-color="tertiary" class="w-8 h-8 rounded-full bg-tertiary border-2 border-white shadow-md color-btn"></button>
-                <button data-color="quaternary" class="w-8 h-8 rounded-full bg-quaternary border-2 border-white shadow-md color-btn"></button>
-                <button data-color="quinary" class="w-8 h-8 rounded-full bg-quinary border-2 border-white shadow-md color-btn"></button>
+            <div class="flex justify-center gap-2 flex-wrap">
+                <button data-color="primary" class="w-7 h-7 rounded-full bg-primary border-2 border-white shadow-md color-btn active"></button>
+                <button data-color="secondary" class="w-7 h-7 rounded-full bg-secondary border-2 border-white shadow-md color-btn"></button>
+                <button data-color="tertiary" class="w-7 h-7 rounded-full bg-tertiary border-2 border-white shadow-md color-btn"></button>
+                <button data-color="quaternary" class="w-7 h-7 rounded-full bg-quaternary border-2 border-white shadow-md color-btn"></button>
+                <button data-color="quinary" class="w-7 h-7 rounded-full bg-quinary border-2 border-white shadow-md color-btn"></button>
             </div>
         </div>
         
-        <!-- 居中卡片导航区域 - 元素完美对齐 -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <!-- 卡片导航区域 - 更紧凑的布局 -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             <!-- 卡片1 -->
-            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+            <div class="card bg-white rounded-lg p-3 card-shadow card-hover color-transition card-standard">
                 <a href="http://dqcp7fhz.svipcdn.cn/www43136177" class="card-link">
                     <div class="card-content">
-                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
-                            <i class="fa fa-home text-xl"></i>
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2 color-transition bg-primaryLight text-primary icon-container">
+                            <i class="fa fa-globe text-lg"></i>
                         </div>
-                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">网页版</h3>
-                        <p class="text-gray-600 text-sm">路径1</p>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">网页版</h3>
+                        <p class="text-gray-600 text-xs">路径1</p>
                     </div>
                 </a>
             </div>
             
             <!-- 卡片2 -->
-            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+            <div class="card bg-white rounded-lg p-3 card-shadow card-hover color-transition card-standard">
                 <a href="http://xtvyrj2h.svipcdn.cn/www43136177" class="card-link">
                     <div class="card-content">
-                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
-                            <i class="fa fa-compass text-xl"></i>
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2 color-transition bg-primaryLight text-primary icon-container">
+                            <i class="fa fa-external-link text-lg"></i>
                         </div>
-                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">网页版</h3>
-                        <p class="text-gray-600 text-sm">路径2</p>
-                    </div>
-                </a>
-            </div>
-            <!-- 卡片3.1 -->
-            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
-                <a href="https://wwrl.lanzouu.com/ikbIv37rrl3e" class="card-link">
-                    <div class="card-content">
-                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
-                            <i class="fa fa-plus text-xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">网页版用户请下载/安卓</h3>
-                        <p class="text-gray-600 text-sm">主站不丢失</p>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">网页版</h3>
+                        <p class="text-gray-600 text-xs">路径2</p>
                     </div>
                 </a>
             </div>
             
-            <!-- 卡片3 -->
-            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+            <!-- 卡片3.1 - 带边框和角标 -->
+            <div class="card bg-white rounded-lg p-3 card-shadow card-hover color-transition card-standard relative border-2" data-highlight="true">
+                <!-- 右上角角标 -->
+                <div class="badge bg-quaternary text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
+                    推荐使用
+                </div>
+                <a href="https://wwrl.lanzouu.com/ikbIv37rrl3e" class="card-link">
+                    <div class="card-content">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2 color-transition bg-primaryLight text-primary icon-container">
+                            <i class="fa fa-download text-lg"></i>
+                        </div>
+                        <h3 class="font-semibold text-xs sm:text-sm mb-1 color-transition text-primaryDark">网页版用户请下载/安卓</h3>
+                        <p class="text-gray-600 text-xs">主站不丢失</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- 卡片3 - 带边框和角标 -->
+            <div class="card bg-white rounded-lg p-3 card-shadow card-hover color-transition card-standard relative border-2" data-highlight="true">
+                <!-- 右上角角标 -->
+                <div class="badge bg-quaternary text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
+                    推荐使用
+                </div>
                 <a href="https://wwrl.lanzouu.com/iN0R537quddi" class="card-link">
                     <div class="card-content">
-                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
-                            <i class="fa fa-plus text-xl"></i>
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2 color-transition bg-primaryLight text-primary icon-container">
+                            <i class="fa fa-android text-lg"></i>
                         </div>
-                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">安卓APK（独享）</h3>
-                        <p class="text-gray-600 text-sm">点击下载</p>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">安卓APK（独享）</h3>
+                        <p class="text-gray-600 text-xs">点击下载</p>
                     </div>
                 </a>
             </div>
             
             <!-- 卡片4 -->
-            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+            <div class="card bg-white rounded-lg p-3 card-shadow card-hover color-transition card-standard">
                 <a href="bookmarks.html" class="card-link">
                     <div class="card-content">
-                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
-                            <i class="fa fa-bookmark text-xl"></i>
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2 color-transition bg-primaryLight text-primary icon-container">
+                            <i class="fa fa-apple text-lg"></i>
                         </div>
-                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">IOS安装包</h3>
-                        <p class="text-gray-600 text-sm">即将发布</p>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">IOS安装包</h3>
+                        <p class="text-gray-600 text-xs">即将发布</p>
                     </div>
                 </a>
             </div>
 
-                <!-- 卡片4.5 -->
-            <div class="card bg-white rounded-xl p-6 card-shadow card-hover color-transition card-standard">
+            <!-- 卡片4.5 -->
+            <div class="card bg-white rounded-lg p-3 card-shadow card-hover color-transition card-standard">
                 <a href="" class="card-link">
                     <div class="card-content">
-                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 color-transition bg-primaryLight text-primary">
-                            <i class="fa fa-user text-xl"></i>
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2 color-transition bg-primaryLight text-primary icon-container">
+                            <i class="fa fa-desktop text-lg"></i>
                         </div>
-                        <h3 class="font-semibold text-lg mb-2 color-transition text-primaryDark">Windows桌面版</h3>
-                        <p class="text-gray-600 text-sm">开发中</p>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">Windows桌面版</h3>
+                        <p class="text-gray-600 text-xs">开发中</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 额外卡片（默认隐藏） -->
+        <div id="extraCardContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mt-3 hidden">
+            <div class="card bg-white rounded-lg p-3 card-shadow card-hover color-transition card-standard">
+                <a href="待使用" class="card-link">
+                    <div class="card-content">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2 color-transition bg-primaryLight text-primary icon-container">
+                            <i class="fa fa-rocket text-lg"></i>
+                        </div>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">避难所开启</h3>
+                        <p class="text-gray-600 text-xs">点击进入</p>
                     </div>
                 </a>
             </div>
         </div>
     </div>
+
+    <!-- 密码弹窗（默认隐藏） -->
+    <div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 password-modal flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-5 max-w-md w-full mx-3 transform transition-all">
+            <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">末日堡垒</h3>
+            <p class="text-gray-600 mb-3 text-center text-sm">很遗憾！让您进入了避难所，请联系管理员索要通行密码</p>
             
-       
+            <div class="mb-3">
+                <input type="password" id="passwordInput" placeholder="请输入密码" 
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm">
+            </div>
+            
+            <div class="text-red-500 text-xs mb-3 hidden" id="passwordError">
+                <i class="fa fa-exclamation-circle mr-1"></i>密码错误，请重试
+            </div>
+            
+            <div class="flex gap-2">
+                <button id="cancelPassword" class="flex-1 px-3 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors text-sm">
+                    取消
+                </button>
+                <button id="submitPassword" class="flex-1 px-3 py-2 bg-primary text-white rounded-lg hover:bg-primaryDark transition-colors text-sm">
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+           
 
     <script>
+        // 安全增强：禁用右键菜单和相关快捷键
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault(); // 禁用右键菜单
+            return false;
+        });
+
+        // 禁用常用的查看源代码快捷键
+        document.addEventListener('keydown', function(e) {
+            // 禁用F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+            
+            // 禁用Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+            }
+            
+            // 禁用Ctrl+U (查看源代码)
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+            }
+            
+            // 禁用Ctrl+Shift+J (打开控制台)
+            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+                e.preventDefault();
+            }
+        });
+
+        // 在这里设置密码，您可以自行修改
+        const CORRECT_PASSWORD = "2050"; // 请修改为您想要的密码
+        
+        // 安全运行时间功能
+        // 设置网站启动时间（请修改为实际启动时间）
+        const LAUNCH_DATE = new Date('2025-07-01T00:00:00');
+        
+        function updateUptime() {
+            const now = new Date();
+            const uptimeMs = now - LAUNCH_DATE;
+            
+            // 计算天、时、分、秒
+            const seconds = Math.floor((uptimeMs / 1000) % 60);
+            const minutes = Math.floor((uptimeMs / (1000 * 60)) % 60);
+            const hours = Math.floor((uptimeMs / (1000 * 60 * 60)) % 24);
+            const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24));
+            
+            // 格式化显示，确保两位数
+            const formattedTime = `${days}天 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // 更新显示
+            document.getElementById('uptime').textContent = formattedTime;
+        }
+        
+        // 初始更新一次
+        updateUptime();
+        // 每秒更新一次
+        setInterval(updateUptime, 1000);
+        
         // 颜色切换功能
         document.addEventListener('DOMContentLoaded', function() {
             const colorButtons = document.querySelectorAll('.color-btn');
-            const iconContainers = document.querySelectorAll('.card .w-12');
+            const iconContainers = document.querySelectorAll('.card .w-10');
             const cardTitles = document.querySelectorAll('.card h3');
+            const highlightedCards = document.querySelectorAll('[data-highlight="true"]');
+            const extraCardCheckbox = document.getElementById('showExtraCard');
+            const extraCardContainer = document.getElementById('extraCardContainer');
+            const passwordModal = document.getElementById('passwordModal');
+            const passwordInput = document.getElementById('passwordInput');
+            const submitPassword = document.getElementById('submitPassword');
+            const cancelPassword = document.getElementById('cancelPassword');
+            const passwordError = document.getElementById('passwordError');
+            const uptimeDisplay = document.querySelector('.uptime-display');
+            
+            // 记录密码是否验证通过
+            let passwordVerified = false;
             
             // 设置初始颜色
             let currentColor = 'primary';
@@ -212,21 +399,37 @@
                 });
             });
             
-            // 设置初始激活状态
+            // 设置初始激活状态和边框颜色
             document.querySelector(`[data-color="${currentColor}"]`).classList.add('active', 'ring-2', `ring-${currentColor}`, 'ring-offset-2');
+            updateCardColors(currentColor); // 确保初始边框颜色正确
             
             // 更新卡片颜色的函数
             function updateCardColors(color) {
-                // 移除所有颜色类
+                // 移除所有颜色类并添加新颜色
                 iconContainers.forEach(icon => {
                     icon.className = icon.className.replace(/bg-\w+Light|text-\w+/g, '');
-                    icon.classList.add(`bg-${color}Light`, `text-${color}`);
+                    icon.classList.add(`bg-${color}Light`, `text-${color}`, 'w-10', 'h-10', 'rounded-lg', 'flex', 'items-center', 'justify-center', 'mb-2', 'color-transition', 'icon-container');
                 });
                 
                 cardTitles.forEach(title => {
                     title.className = title.className.replace(/text-\w+Dark/g, '');
-                    title.classList.add(`text-${color}Dark`);
+                    title.classList.add(`text-${color}Dark`, 'font-semibold', 'text-sm', 'mb-1', 'color-transition');
                 });
+                
+                // 更新高亮卡片的边框颜色
+                highlightedCards.forEach(card => {
+                    // 先移除所有可能的边框颜色类
+                    ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'].forEach(c => {
+                        card.classList.remove(`border-${c}`);
+                    });
+                    // 添加当前颜色的边框
+                    card.classList.add(`border-${color}`);
+                });
+                
+                // 更新运行时间显示的颜色
+                uptimeDisplay.className = uptimeDisplay.className.replace(/border-\w+/g, '');
+                uptimeDisplay.classList.add(`border-${color}`, 'border', 'uptime-display', 'bg-white', 'card-shadow', 'color-transition', 'mb-4');
+                document.getElementById('uptime').className = `font-semibold text-${color}Dark`;
             }
             
             // 为卡片链接添加点击效果
@@ -238,20 +441,72 @@
                     setTimeout(() => {
                         card.classList.remove('scale-95');
                     }, 150);
-                    
-                    // 可以在这里添加自定义跳转逻辑
-                    const cardName = this.querySelector('h3').textContent;
-                    console.log(`点击了${cardName}卡片，链接地址：${this.href}`);
-                    
-                    // 如果需要阻止默认跳转行为，可以取消下面这行的注释
-                    // e.preventDefault();
                 });
             });
+
+            // 复选框控制额外卡片显示/隐藏
+            extraCardCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // 如果密码未验证，则显示密码弹窗
+                    if (!passwordVerified) {
+                        passwordModal.classList.remove('hidden');
+                        passwordInput.value = '';
+                        passwordError.classList.add('hidden');
+                        // 聚焦到密码输入框
+                        setTimeout(() => passwordInput.focus(), 300);
+                    } else {
+                        // 密码已验证，直接显示卡片
+                        extraCardContainer.classList.remove('hidden');
+                        updateCardColors(currentColor);
+                    }
+                } else {
+                    // 取消勾选，隐藏卡片
+                    extraCardContainer.classList.add('hidden');
+                }
+            });
+            
+            // 提交密码验证
+            submitPassword.addEventListener('click', verifyPassword);
+            
+            // 取消密码验证，同时取消复选框勾选
+            cancelPassword.addEventListener('click', function() {
+                passwordModal.classList.add('hidden');
+                extraCardCheckbox.checked = false;
+            });
+            
+            // 按Enter键也可以提交密码
+            passwordInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    verifyPassword();
+                }
+            });
+            
+            // 密码验证函数
+            function verifyPassword() {
+                const password = passwordInput.value.trim();
+                
+                if (password === CORRECT_PASSWORD) {
+                    // 密码正确
+                    passwordVerified = true;
+                    passwordModal.classList.add('hidden');
+                    extraCardContainer.classList.remove('hidden');
+                    updateCardColors(currentColor);
+                } else {
+                    // 密码错误
+                    passwordError.classList.remove('hidden');
+                    // 添加抖动动画
+                    passwordInput.classList.add('animate-shake');
+                    setTimeout(() => {
+                        passwordInput.classList.remove('animate-shake');
+                    }, 500);
+                }
+            }
         });
     </script>
 </body>
 </html>
     
+
 
 
 
