@@ -62,7 +62,7 @@
                 transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
             }
             .card-standard {
-                min-height: 140px; /* 增加卡片高度，给图标更多空间 */
+                min-height: 140px;
             }
             .card-link {
                 display: block;
@@ -87,7 +87,6 @@
                 position: relative;
                 z-index: 1;
             }
-            /* 图标容器增强效果 */
             .icon-container::after {
                 content: '';
                 position: absolute;
@@ -114,7 +113,7 @@
                 right: -6px;
                 transform: rotate(0deg);
                 animation: pulse 2s infinite;
-                background-color: #000; /* 黑色角标 */
+                background-color: #000;
                 z-index: 2;
             }
             @keyframes pulse {
@@ -122,7 +121,6 @@
                 50% { transform: scale(1.05); }
                 100% { transform: scale(1); }
             }
-            /* 流光字体效果 */
             .流光字体 {
                 background: linear-gradient(90deg, #3B82F6, #8B5CF6, #10B981, #F97316, #EF4444);
                 background-size: 300% 300%;
@@ -138,14 +136,12 @@
                 50% { background-position: 100% 50%; }
                 100% { background-position: 0% 50%; }
             }
-            /* 左上角勾选框样式 */
             .top-checkbox {
                 position: absolute;
                 top: 1rem;
                 left: 1rem;
                 z-index: 10;
             }
-            /* 安全运行时间样式 */
             .uptime-display {
                 padding: 0.5rem 1rem;
                 border-radius: 0.5rem;
@@ -154,6 +150,18 @@
                 max-width: 210px;
                 margin-left: auto;
                 margin-right: auto;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .animate-shake {
+                animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            }
+            @keyframes shake {
+                10%, 90% { transform: translateX(-1px); }
+                20%, 80% { transform: translateX(2px); }
+                30%, 50%, 70% { transform: translateX(-3px); }
+                40%, 60% { transform: translateX(3px); }
             }
         }
     </style>
@@ -176,13 +184,13 @@
             </p>
             
             <!-- 安全运行时间显示 -->
-            <div class="uptime-display bg-white card-shadow color-transition mb-4">
-                陪伙伴们度过: <span id="uptime" class="font-semibold"></span>
+            <div class="uptime-display bg-white card-shadow color-transition mb-4 border border-primary">
+                陪伙伴们度过: <span id="uptime" class="font-semibold text-primaryDark"></span>
             </div>
             
             <!-- 颜色切换按钮 -->
             <div class="flex justify-center gap-2 flex-wrap">
-                <button data-color="primary" class="w-7 h-7 rounded-full bg-primary border-2 border-white shadow-md color-btn active"></button>
+                <button data-color="primary" class="w-7 h-7 rounded-full bg-primary border-2 border-white shadow-md color-btn active ring-2 ring-primary ring-offset-2"></button>
                 <button data-color="secondary" class="w-7 h-7 rounded-full bg-secondary border-2 border-white shadow-md color-btn"></button>
                 <button data-color="tertiary" class="w-7 h-7 rounded-full bg-tertiary border-2 border-white shadow-md color-btn"></button>
                 <button data-color="quaternary" class="w-7 h-7 rounded-full bg-quaternary border-2 border-white shadow-md color-btn"></button>
@@ -193,13 +201,12 @@
         <!-- 卡片导航区域 -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <!-- 卡片1 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2" data-highlight="true">
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
                 <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
                     点我做单
                 </div>
                 <a href="http://dqcp7fhz.svipcdn.cn/www43136177" class="card-link">
                     <div class="card-content">
-                        <!-- 增大图标容器和图标尺寸 -->
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-globe text-xl"></i>
                         </div>
@@ -210,7 +217,7 @@
             </div>
             
             <!-- 卡片2 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2" data-highlight="true">
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
                 <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
                     点我做单
                 </div>
@@ -225,15 +232,15 @@
                 </a>
             </div>
             
-            <!-- 卡片3.1 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2" data-highlight="true">
+            <!-- 卡片3 -->
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
                 <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
                     安卓APK
                 </div>
                 <a href="https://wwrl.lanzouu.com/ih2GF37yqqda" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-download text-xl"></i>
+                            <i class="fa fa-android text-xl"></i>
                         </div>
                         <h3 class="font-semibold text-xs sm:text-sm mb-1 color-transition text-primaryDark">安卓APK</h3>
                         <p class="text-gray-600 text-xs">点击下载</p>
@@ -241,15 +248,15 @@
                 </a>
             </div>
             
-            <!-- 卡片3 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2" data-highlight="true">
+            <!-- 卡片4 -->
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
                 <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
                     IOS-IPA
                 </div>
                 <a href="https://wwrl.lanzouu.com/ivOj637yqcdg/iN0R537quddi" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-android text-xl"></i>
+                            <i class="fa fa-apple text-xl"></i>
                         </div>
                         <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">IOS（专线）</h3>
                         <p class="text-gray-600 text-xs">点击下载</p>
@@ -257,24 +264,21 @@
                 </a>
             </div>
             
-            <!-- 卡片4 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
-                    月卡苹果IOS
-                </div>
-                <a href="https://wwrl.lanzouu.com/iRBIJ37tw8yj" class="card-link">
+            <!-- 卡片5 - 修改为使用教程，更换图标并去掉角标 -->
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
+                <a href="#" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-apple text-xl"></i>
+                            <i class="fa fa-book text-xl"></i> <!-- 更换为书本图标 -->
                         </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">IOS安装包（专线）</h3>
-                        <p class="text-gray-600 text-xs">点击下载</p>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">使用教程</h3> <!-- 修改为使用教程 -->
+                        <p class="text-gray-600 text-xs">新手必看</p>
                     </div>
                 </a>
             </div>
 
-            <!-- 卡片4.5 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard">
+            <!-- 卡片6 -->
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard border-2 border-transparent">
                 <a href="" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
@@ -289,7 +293,7 @@
 
         <!-- 额外卡片（默认隐藏） -->
         <div id="extraCardContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4 hidden">
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard">
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard border-2 border-primary">
                 <a href="待使用" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
@@ -303,11 +307,11 @@
         </div>
     </div>
 
-    <!-- 密码弹窗（默认隐藏） -->
+    <!-- 密码弹窗 -->
     <div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 password-modal flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-lg p-5 max-w-md w-full mx-3 transform transition-all">
             <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">末日堡垒</h3>
-            <p class="text-gray-600 mb-3 text-center text-sm">很遗憾！让您进入了避难所，请联系管理员索要通行密码</p>
+            <p class="text-gray-600 mb-3 text-center text-sm">请输入密码以访问额外功能</p>
             
             <div class="mb-3">
                 <input type="password" id="passwordInput" placeholder="请输入密码" 
@@ -328,10 +332,9 @@
             </div>
         </div>
     </div>
-           
 
     <script>
-        // 安全增强：禁用右键菜单和相关快捷键
+        // 安全增强
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             return false;
@@ -348,12 +351,12 @@
                 e.preventDefault();
             }
             
-            // 禁用Ctrl+U (查看源代码)
+            // 禁用Ctrl+U
             if (e.ctrlKey && e.key === 'u') {
                 e.preventDefault();
             }
             
-            // 禁用Ctrl+Shift+J (打开控制台)
+            // 禁用Ctrl+Shift+J
             if (e.ctrlKey && e.shiftKey && e.key === 'J') {
                 e.preventDefault();
             }
@@ -366,20 +369,27 @@
         const LAUNCH_DATE = new Date('2025-07-01T00:00:00');
         
         function updateUptime() {
-            const now = new Date();
-            const uptimeMs = now - LAUNCH_DATE;
-            
-            // 计算天、时、分、秒
-            const seconds = Math.floor((uptimeMs / 1000) % 60);
-            const minutes = Math.floor((uptimeMs / (1000 * 60)) % 60);
-            const hours = Math.floor((uptimeMs / (1000 * 60 * 60)) % 24);
-            const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24));
-            
-            // 格式化显示
-            const formattedTime = `${days}天 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            // 更新显示
-            document.getElementById('uptime').textContent = formattedTime;
+            try {
+                const now = new Date();
+                const uptimeMs = now - LAUNCH_DATE;
+                
+                // 计算天、时、分、秒
+                const seconds = Math.floor((uptimeMs / 1000) % 60);
+                const minutes = Math.floor((uptimeMs / (1000 * 60)) % 60);
+                const hours = Math.floor((uptimeMs / (1000 * 60 * 60)) % 24);
+                const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24));
+                
+                // 格式化显示
+                const formattedTime = `${days}天 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // 更新显示
+                const uptimeElement = document.getElementById('uptime');
+                if (uptimeElement) {
+                    uptimeElement.textContent = formattedTime;
+                }
+            } catch (error) {
+                console.error('更新运行时间失败:', error);
+            }
         }
         
         // 初始更新一次
@@ -415,23 +425,10 @@
             function updateCardColors(color) {
                 // 移除所有颜色类并添加新颜色
                 iconContainers.forEach(icon => {
-                    // 移除所有可能的颜色类
                     ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'].forEach(c => {
                         icon.classList.remove(`bg-${c}Light`, `text-${c}`);
-                        // 更新图标光晕颜色
-                        icon.style.setProperty('--icon-glow-color', 'transparent');
                     });
-                    // 添加新颜色类
                     icon.classList.add(`bg-${color}Light`, `text-${color}`);
-                    // 设置图标光晕颜色
-                    const colorMap = {
-                        'primary': '#3B82F6',
-                        'secondary': '#10B981',
-                        'tertiary': '#8B5CF6',
-                        'quaternary': '#EF4444',
-                        'quinary': '#F97316'
-                    };
-                    icon.style.setProperty('--icon-glow-color', colorMap[color]);
                 });
                 
                 // 更新卡片标题颜色
@@ -484,27 +481,18 @@
             // 为每个颜色按钮添加点击事件
             colorButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // 移除所有按钮的激活状态
                     colorButtons.forEach(btn => btn.classList.remove('active', 'ring-2', 'ring-offset-2'));
-                    
-                    // 添加当前按钮的激活状态
                     this.classList.add('active', 'ring-2', 'ring-offset-2', `ring-${this.dataset.color}`);
-                    
-                    // 更新当前颜色并应用
                     currentColor = this.dataset.color;
                     updateCardColors(currentColor);
                 });
             });
             
-            // 设置初始激活状态和边框颜色
-            document.querySelector(`[data-color="${currentColor}"]`).classList.add('active', 'ring-2', `ring-${currentColor}`, 'ring-offset-2');
-            updateCardColors(currentColor); // 确保初始颜色正确应用
-            
             // 为卡片链接添加点击效果
             document.querySelectorAll('.card-link').forEach(link => {
                 link.addEventListener('click', function() {
-                    const   常量   卡 card   卡 = this   这.closest('.card');
-                    card.classList.add('scale-95');card   卡.classList   班级名册.add   添加(规模- 95);
+                    const card = this.closest('.card');
+                    card   卡.classList   班级名册.add   添加('scale-95');
                     setTimeout(() => {   7月()=> (
                         card.classList.remove('scale-95');card   卡.classList   班级名册.remove   删除(规模- 95);
                     }, 150);
@@ -515,13 +503,14 @@
             extraCardCheckbox.addEventListener('change', function() {extraCardCheckbox。addEventListener('change', function   函数() {
                 if (this.checked) {   If (this   这.checked) {
                     if (!passwordVerified) {   如果(!passwordVerified) {
+                        // 显示密码弹窗
                         passwordModal.classList.remove('hidden');passwordModal.classList   班级名册.remove   删除(隐含);
                         passwordInput.value = '';
                         passwordError.classList.add('hidden');passwordError.classList   班级名册.add   添加(隐含);
                         setTimeout(() => passwordInput.focus(), 300);7月1日=>通行证。focus (), 300);
                     } else {
                         extraCardContainer.classList.remove('hidden');extraCardContainer.classList   班级名册.remove   删除(隐含);
-                        updateCardColors(currentColor); // 确保颜色正确应用
+                        updateCardColors(currentColor);
                     }
                 } else {
                     extraCardContainer.classList.add('hidden');extraCardContainer.classList   班级名册.add   添加(隐含);
@@ -534,7 +523,7 @@
             // 取消密码验证
             cancelPassword.addEventListener('click', function() {cancelPassword。addEventListener('click'   “点击”, function   函数() {
                 passwordModal.classList.add('hidden');passwordModal.classList   班级名册.add   添加(隐含);
-                extraCardCheckbox.checked = false;extraCardCheckbox。Checked = false；
+                extraCardCheckbox.checked = false;extraCardCheckbox。CheckedextraCardCheckbox。检查 = false；   虚假的;
             });
             
             // 按Enter键提交密码
@@ -546,18 +535,18 @@
             
             // 密码验证函数
             function verifyPassword() {函数验证密码（）{
-                const password = passwordInput.value.trim();const   常量   密码 password   密码 = passwordInput.value.trim()；
+                const password = passwordInput.value.trim();const   常量   密码 password   密码 = passwordInput.value   价值.trim   修剪()；
                 
                 if (password === CORRECT_PASSWORD) {
-                    passwordVerified = true;   passwordVerified = true；
+                    passwordVerified = true;   passwordVerified = true；   真正的;
                     passwordModal.classList.add('hidden');passwordModal.classList   班级名册.add   添加(隐含);
                     extraCardContainer.classList.remove('hidden');extraCardContainer.classList   班级名册.remove   删除(隐含);
-                    updateCardColors(currentColor); // 确保颜色正确应用
+                    updateCardColors(currentColor);
                 } else {
                     passwordError.classList.remove('hidden');passwordError.classList   班级名册.remove   删除(隐含);
-                    passwordInput.classList.add('animate-shake');passwordInput.classList   班级名册.add   添加(“animate-shake”);
+                    passwordInput.classList.add('animate-shake');passwordInput.classList   班级名册.add   添加(“animate   “动画-shake”   摇”);
                     setTimeout(() => {   7月()=> (
-                        passwordInput.classList.remove('animate-shake');passwordInput.classList   班级名册.remove   删除(“animate-shake”);
+                        passwordInput.classList.remove('animate-shake');passwordInput.classList   班级名册.remove   删除(“animate   “动画-shake”   摇”);
                     }, 500);
                 }
             }
@@ -565,8 +554,6 @@
     </script>   > < /脚本
 </body>   身体< / >
 </html>
-
- 
 
 
 
