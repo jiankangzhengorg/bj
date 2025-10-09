@@ -154,7 +154,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                display: inline-block; /* 使宽度适应内容并与颜色切换区域对齐 */
+                display: inline-block;
             }
             .animate-shake {
                 animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
@@ -185,7 +185,7 @@
                 <span class="流光字体">更新，优化了速度和线路，点击下载对应版本的app即可</span>
             </p>
             
-            <!-- 安全运行时间显示 - 已调整长度 -->
+            <!-- 安全运行时间显示 -->
             <div class="mb-4">
                 <div class="uptime-display bg-white card-shadow color-transition border border-primary">
                     陪伙伴们度过: <span id="uptime" class="font-semibold text-primaryDark">0天 00:00:00</span>
@@ -369,6 +369,22 @@
         // 密码设置
         const CORRECT_PASSWORD = "2050";
         
+        // 自动刷新设置 (2分钟 = 120秒)
+        const REFRESH_INTERVAL = 120;
+        let refreshTimer = REFRESH_INTERVAL;
+        let refreshIntervalId = null;
+        
+        // 初始化自动刷新计时器
+        function initAutoRefresh() {
+            refreshIntervalId = setInterval(() => {
+                refreshTimer--;
+                if (refreshTimer <= 0) {
+                    clearInterval(refreshIntervalId);
+                    window.location.reload();
+                }
+            }, 1000);
+        }
+        
         // 安全运行时间功能
         function updateUptime() {
             try {
@@ -405,6 +421,9 @@
         updateUptime();
         // 每秒更新一次
         setInterval(updateUptime, 1000);
+        
+        // 初始化自动刷新
+        initAutoRefresh();
         
         // 颜色切换功能
         document.addEventListener('DOMContentLoaded', function() {
@@ -573,6 +592,7 @@
     </script>
 </body>
 </html>
+
 
 
 
