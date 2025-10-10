@@ -192,6 +192,14 @@
                 </div>
             </div>
             
+            <!-- 刷新同步按钮 -->
+            <div class="mb-4">
+                <button id="refreshBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primaryDark transition-colors text-sm flex items-center justify-center gap-2">
+                    <i class="fa fa-refresh"></i>
+                    <span>刷新同步</span>
+                </button>
+            </div>
+            
             <!-- 颜色切换按钮 -->
             <div class="flex justify-center gap-2 flex-wrap">
                 <button data-color="primary" class="w-7 h-7 rounded-full bg-primary border-2 border-white shadow-md color-btn active ring-2 ring-primary ring-offset-2"></button>
@@ -443,6 +451,27 @@
             const uptimeValue = document.getElementById('uptime');
             const passwordSubmitBtn = document.getElementById('submitPassword');
             
+            // 刷新按钮功能
+            const refreshBtn = document.getElementById('refreshBtn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    // 添加点击效果
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                        // 显示刷新提示
+                        const originalText = this.querySelector('span').textContent;
+                        this.querySelector('span').textContent = '刷新中...';
+                        this.disabled = true;
+                        
+                        // 实际刷新页面
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    }, 150);
+                });
+            }
+            
             // 记录密码是否验证通过
             let passwordVerified = false;
             
@@ -592,6 +621,7 @@
     </script>
 </body>
 </html>
+
 
 
 
