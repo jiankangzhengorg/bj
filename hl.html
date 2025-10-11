@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互联+ - Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            /* 方案一：科技蓝渐变 */
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            /* 方案二：活力橙红渐变（备用方案） */
+            /* background: linear-gradient(135deg, #FF512F, #DD2476); */
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid #2196f3; /* 与主色调呼应 */
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            color: #2196f3; /* 与主色调一致 */
+            margin-bottom: 15px;
+        }
+        
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #1976d2; /* 与主色调一致 */
+        }
+        
+        .service-desc {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .service-features {
+            list-style-type: none;
+        }
+        
+        .service-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-icon {
+            margin-right: 10px;
+            color: #4caf50;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .services {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>互联+</h1>
+            <p class="tagline">业务展示，为了顾客而存在</p>
+        </header>
+        
+        <div class="services">
+            <div class="service-card">
+                <div class="service-icon">🌐</div>
+                <h2 class="service-title">ShuKeYun【明星产品】</h2>
+                <p class="service-desc">为千万骑手量身定做解决方案，助力健康行业数字化升级。</p>
+                <ul class="service-features">
+                    <li><span class="feature-icon">✓</span> 永不售卖永久卡，不圈钱，不跑路</li>
+                    <li><span class="feature-icon">✓</span> 模板多样化，完全随机/自定义</li>
+                    <li><span class="feature-icon">✓</span> 线上可查，深度增强顾客信任链接</li>
+                    <li><span class="feature-icon">✓</span> 数据直观，提高生产力，促进业务增长</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📱</div>
+                <h2 class="service-title">网站/应用/小程序/开发</h2>
+                <p class="service-desc">打造高性能、高体验的网页/移动应用，覆盖iOS、Android全平台。</p>
+                <ul class="service-features">
+                    <li><span class="feature-icon">✓</span> 原生应用开发</li>
+                    <li><span class="feature-icon">✓</span> 跨平台解决方案</li>
+                    <li><span class="feature-icon">✓</span> 小程序开发</li>
+                    <li><span class="feature-icon">✓</span> 用户体验优化</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">☁️</div>
+                <h2 class="service-title">离案云服务</h2>
+                <p class="service-desc">提供安全可靠的云计算基础设施，助力企业业务快速扩展。</p>
+                <ul class="service-features">
+                    <li><span class="feature-icon">✓</span> 云服务器部署，免备案</li>
+                    <li><span class="feature-icon">✓</span> 数据存储解决方案</li>
+                    <li><span class="feature-icon">✓</span> 负载均衡与CDN高防</li>
+                    <li><span class="feature-icon">✓</span> 不死域名映射</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h2 class="service-title">ShuKe数据挖掘</h2>
+                <p class="service-desc">挖掘数据价值，提供精准可靠的数据，来源真实。</p>
+                <ul class="service-features">
+                    <li><span class="feature-icon">✓</span> 数据采集</li>
+                    <li><span class="feature-icon">✓</span> 根据需求定制分析</li>
+                    <li><span class="feature-icon">✓</span> 用户数据行为分析</li>
+                    <li><span class="feature-icon">✓</span> 精准靠谱查D认准ShuKe查档</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🐧</div>
+                <h2 class="service-title">一手号商【回收出售】</h2>
+                <p class="service-desc">全平台ZH解决方案</p>
+                <ul class="service-features">
+                    <li><span class="feature-icon">✓</span> 小红书</li>
+                    <li><span class="feature-icon">✓</span> 企鹅</li>
+                    <li><span class="feature-icon">✓</span> X鱼</li>
+                    <li><span class="feature-icon">✓</span> 抖音/快手/等......</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🔒</div>
+                <h2 class="service-title">更多业务开发中</h2>
+                <p class="service-desc">全方位保障用户信息安全，构建可靠的交易闭环。</p>
+                <ul class="service-features">
+                    <li><span class="feature-icon">×</span> 业务报价请联系管理员</li>
+                    <li><span class="feature-icon">×</span> 业务报价请联系管理员</li>
+                    <li><span class="feature-icon">×</span> 业务报价请联系管理员</li>
+                    <li><span class="feature-icon">×</span> 业务报价请联系管理员</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 互联+ 科技有限公司 | 十五年诚信生意，顾客第一 | 商务报价请联系管理员</p>
+        </footer>
+    </div>
+</body>
+</html>
