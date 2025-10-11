@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档/指南e</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+        
+        /* 内容区块样式 */
+        .content-section {
+            margin-bottom: 40px;
+        }
+        
+        .content-section h2 {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .content-section h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            color: var(--primary-color);
+        }
+        
+        .content-section p {
+            margin-bottom: 15px;
+        }
+        
+        /* 图文教程样式 */
+        .tutorial-step {
+            margin-bottom: 30px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 20px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .tutorial-step h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .tutorial-image {
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        /* 代码块样式 */
+        pre {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #c7254e;
+            background-color: #f9f2f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        pre code {
+            color: #333;
+            background-color: transparent;
+            padding: 0;
+        }
+        
+        /* 提示和警告框 */
+        .note {
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary-color);
+            background-color: #f0f8ff;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .warning {
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #f39c12;
+            background-color: #fff8e1;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <header class="header">
+            <h1>官方指导文档</h1>
+        </header>
+        
+        <!-- 介绍部分 -->
+        <section class="content-section">
+            <h2>欢迎您光临</h2>
+            <p>认真阅读简单的文档指南。本文档将指导您完成从安装到使用的全过程。</p>
+            <p>祝您一路顺风！</p>
+            
+            <div class="note">
+                <strong>提示：</strong> 在开始之前，请确保您已拥有卡密，请牢记您的卡密，以便在任何时候随时使用！
+            </div>
+        </section>
+        
+        <!-- 图文教程示例 -->
+        <section class="content-section">
+            <h2>宝宝让我们开始吧</h2>
+            
+            <div class="tutorial-step">
+                <h4> 1：下载安装包</h4>
+                <p>访问我们的官方网站，下载适用于您手机的安装包，https://bj-kbt9.4everland.app/ 值得一提的是，我们的主站几乎不会改变地址，所以这是唯一站点地址,比如说我们现在正在红框标记的文档内容里，那么您要做的就是根据自己的手机操作系统来去下载对应的apk或者IOS的安装包，为什么一定要下载安装包？如果您把主站成功安装到手机设备上，那么你就会获得一个永不改变的地址，即使出点小问题，待维护完毕后，只需要打开app，点左上角的刷新同步功能后，再进行访问就可以了，下面我将为您介绍刷新同步！</p>
+                <img src="b5e737cb-c08b-49f6-bcd9-b2a9d1694f51.png" alt="下载页面" class="tutorial-image">
+                <p class="image-caption">图1：官方网站内容</p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h4> 2：异步刷新同步</h4>
+                <p>当域名变红，无法扫码，不要慌，此时管理人员正在比你要着急的紧急维护中，待维护完毕后，你只需要打开app，点击如图所示的刷新同步！然后正常选择通道进入即可，整个过程无需您更换任何地址，方便快捷。</p>
+                <img src="e91c070c-1ecb-458e-bce0-fe62c3d6400a.png" alt="安装向导" class="tutorial-image">
+                <p class="image-caption">图2：官方网站内容</p>
+                
+                <div class="warning">
+                    <strong>注意：</strong> 一定要等待管理员维护完成通知后再点刷新同步清楚缓存，否则在维护期间您即使操作了，也不会有任何作用
+                </div>
+            </div>
+            
+            <div class="tutorial-step">
+                <h4> 3：使用介绍</h4>
+                <p>我们内置了许多模板，包括星标模板，请根据您的使用偏好和需求来具体选择，支持任何模板自定义/或者随机，您只需要花费几秒钟轻轻点击两下，即可完成您的业务！点击新增记录即可开始！</p>
+                <img src="3b64b94e3a0fe8881fd57a75d1f927ea.jpeg" alt="安装完成" class="tutorial-image">
+                <p class="image-caption">图3：官方app内容</p>
+            </div>
+        </section>
+        
+        <!-- 代码示例 -->
+        <section class="content-section">
+            <h2>关于卡密说明</h2>
+            <p>声明</p>
+            <pre><code>  @ShukeYun2025
+  1-本站从未出售过任何永久卡，任何宣称永久亦或贩卖源码的行为均属诈骗
+  2-如果您在本站遇到任何使用问题，请及时联系管理员协助您解决
+  3-如果您有任何反馈，请联系反馈给管理员
+  4-本站承诺，始终坚持高速-稳定-纯净-顾客第一的原理原则去展开服务
+  5-我们因顾客而存在
+  文档随时更新-感谢您的阅读使用！Thanks</code></pre>
+        </section>
+    </main>
+</body>
+</html>
