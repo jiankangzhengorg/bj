@@ -193,10 +193,16 @@
             </div>
             
             <!-- 刷新同步按钮 -->
-            <div class="mb-4">
+            <div class="mb-4 flex justify-center gap-2">
                 <button id="refreshBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primaryDark transition-colors text-sm flex items-center justify-center gap-2">
                     <i class="fa fa-refresh"></i>
                     <span>刷新同步</span>
+                </button>
+                
+                <!-- 新增的幸运抽奖按钮 -->
+                <button id="lotteryBtn" class="px-4 py-2 bg-quaternary text-white rounded-lg hover:bg-quaternaryDark transition-colors text-sm flex items-center justify-center gap-2">
+                    <i class="fa fa-gift"></i>
+                    <span>幸运抽奖</span>
                 </button>
             </div>
             
@@ -472,6 +478,21 @@
                 });
             }
             
+            // 幸运抽奖按钮功能
+            const lotteryBtn = document.getElementById('lotteryBtn');
+            if (lotteryBtn) {
+                lotteryBtn.addEventListener('click', function() {
+                    // 添加点击效果
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                        
+                        // 跳转到抽奖页面
+                        window.location.href = 'cj.html'; // 您可以修改这个URL
+                    }, 150);
+                });
+            }
+            
             // 记录密码是否验证通过
             let passwordVerified = false;
             
@@ -621,6 +642,7 @@
     </script>
 </body>
 </html>
+
 
 
 
