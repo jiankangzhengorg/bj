@@ -230,7 +230,7 @@
         <!-- 抽奖区域 -->
         <main class="flex-1 flex items-center justify-center w-full lottery-container">
             <div id="lotteryContainer" class="w-full h-full flex items-center justify-center">
-                <div id="lotteryName" class="lottery-name font-bold text-dark text-center text-shadow-lg bg-white/80 rounded-2xl p-6 shadow-lg w-full max-w-md">点击开始抽奖</div>
+                <!-- 移除了白色div -->
             </div>
         </main>
  
@@ -320,7 +320,6 @@
             mainTitle: document.getElementById('mainTitle'),
             subtitle: document.getElementById('subtitle'),
             lotteryContainer: document.getElementById('lotteryContainer'),
-            lotteryName: document.getElementById('lotteryName'),
             startButton: document.getElementById('startButton'),
             stopButton: document.getElementById('stopButton'),
             viewWinnersButton: document.getElementById('viewWinnersButton'),
@@ -494,7 +493,6 @@
             state.isDrawing = true;
             elements.startButton.classList.add('hidden');
             elements.stopButton.classList.remove('hidden');
-            elements.lotteryName.classList.add('lottery-animation');
              
             // 停止获奖音效并重置其状态
             if (elements.winSound) {
@@ -514,7 +512,8 @@
             // 设置抽奖循环
             state.drawInterval = setInterval(() => {
                 const randomIndex = Math.floor(Math.random() * data.participants.length);
-                elements.lotteryName.textContent = data.participants[randomIndex];
+                // 直接显示在抽奖容器中
+                elements.lotteryContainer.textContent = data.participants[randomIndex];
             }, intervalTime);
         }
  
@@ -526,7 +525,6 @@
             clearInterval(state.drawInterval);
             elements.startButton.classList.remove('hidden');
             elements.stopButton.classList.add('hidden');
-            elements.lotteryName.classList.remove('lottery-animation');
              
             // 停止抽奖音效
             if (elements.drawSound) {
@@ -654,16 +652,6 @@
         // 重置抽奖显示
         function resetLotteryDisplay() {
             elements.lotteryContainer.innerHTML = '';
-             
-            const nameElement = document.createElement('div');
-            nameElement.id = 'lotteryName';
-            nameElement.className = 'lottery-name font-bold text-dark text-center bg-white/80 rounded-2xl p-6 shadow-lg w-full max-w-md';
-            nameElement.textContent = '点击开始抽奖';
-             
-            elements.lotteryContainer.appendChild(nameElement);
-             
-            // 重新获取DOM引用
-            elements.lotteryName = document.getElementById('lotteryName');
         }
  
         // 保存中奖记录
