@@ -121,21 +121,7 @@
                 50% { transform: scale(1.05); }
                 100% { transform: scale(1); }
             }
-            .流光字体 {
-                background: linear-gradient(90deg, #3B82F6, #8B5CF6, #10B981, #F97316, #EF4444);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                animation: flow 8s ease infinite;
-                display: inline-block;
-                font-weight: bold;
-            }
-            @keyframes flow {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
+            /* 移除流光字体样式 */
             .top-checkbox {
                 position: absolute;
                 top: 1rem;
@@ -248,7 +234,8 @@
         <div class="text-center mb-6">
             <h1 class="text-[clamp(1.3rem,3vw,1.8rem)] font-bold text-white mb-2">双11特惠来袭！ 11.11-11-18· 我们希望用良好的服务获得用户的青睐，并为顾客而存在！</h1>
             <p class="text-white max-w-xl mx-auto text-sm mb-4 bg-black bg-opacity-30 p-2 rounded-lg">
-                <span class="流光字体">1-双11当天中奖概率上调，当天抽奖次数+1，2-购买年卡送两张月卡【年卡用户赠送win版本美达通】3-购买月卡送一张周卡，初次使用记得看使用文档简单阅读下，请安卓IOS用户各自下载App使用，下载密码:0000</span>
+                <!-- 移除了流光字体类，改为普通白色文字 -->
+                <span>1-双11当天中奖概率上调，当天抽奖次数+1，2-购买年卡送两张月卡【年卡用户赠送win版本美达通】3-购买月卡送一张周卡，初次使用记得看使用文档简单阅读下，请安卓IOS用户各自下载App使用，下载密码:0000</span>
             </p>
             
             <!-- 安全运行时间显示 -->
@@ -753,6 +740,7 @@
     </script>
 </body>
 </html>
+
 
 
 
