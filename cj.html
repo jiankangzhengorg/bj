@@ -204,6 +204,17 @@
             font-weight: bold;
             margin-top: 0.5rem;
         }
+        
+        /* 抽奖次数显示 */
+        .draws-left {
+            background: rgba(255, 107, 107, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #FF6B6B;
+        }
     </style>
 </head>
 <body class="font-inter bg-gradient-to-br from-primary/20 to-secondary/20 min-h-screen flex flex-col transition-all duration-500">
@@ -212,7 +223,7 @@
         <!-- 标题区域 -->
         <header class="py-4 text-center w-full">
             <h1 id="mainTitle" class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold text-dark mb-2 text-shadow">幸运抽奖</h1>
-            <p id="subtitle" class="text-[clamp(0.9rem,2vw,1.1rem)] text-gray-600">每日一次机会抽年卡，只有月卡和年卡用户的中奖记录才有效，中奖会验证卡密</p>
+            <p id="subtitle" class="text-[clamp(0.9rem,2vw,1.1rem)] text-gray-600">每日两次抽奖机会，只有月卡和年卡用户的中奖记录才有效，中奖会验证卡密</p>
         </header>
  
         <!-- 奖品展示区域 -->
@@ -222,15 +233,15 @@
                     <i class="fa fa-crown"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-2">今日奖品</h3>
-                <p id="prizeName" class="text-lg font-semibold">年VIP会员</p>
-                <p class="text-sm opacity-90 mt-2">价值 ¥1***</p>
+                <p id="prizeName" class="text-lg font-semibold">年VIP会员 / 周VIP会员</p>
+                <p class="text-sm opacity-90 mt-2">价值 ¥799 / ¥69</p>
             </div>
         </div>
  
         <!-- 抽奖区域 -->
         <main class="flex-1 flex items-center justify-center w-full lottery-container">
             <div id="lotteryContainer" class="w-full h-full flex items-center justify-center">
-                <!-- 移除了白色div -->
+                <!-- 抽奖结果显示区域 -->
             </div>
         </main>
  
@@ -248,6 +259,11 @@
                 </button>
             </div>
         </footer>
+
+        <!-- 抽奖次数显示 -->
+        <div id="drawsLeftContainer" class="draws-left">
+            今日剩余抽奖次数: <span id="drawsLeft">2</span> 次
+        </div>
 
         <!-- 倒计时显示 -->
         <div id="countdownContainer" class="countdown hidden">
@@ -286,23 +302,32 @@
 
     <script>
         // 奖品配置
-        const prize = {
-            name: "年VIP会员",
-            value: "¥999",
-            icon: "fa-crown"
-        };
+        const prizes = [
+            {
+                name: "年VIP会员",
+                value: "¥999",
+                icon: "fa-crown",
+                rate: 0.001 // 0.1%中奖率
+            },
+            {
+                name: "周VIP会员",
+                value: "¥99",
+                icon: "fa-star",
+                rate: 0.1 // 10%中奖率
+            }
+        ];
 
         // 数据结构定义
         const data = {
             participants: [], // 参与者名单
             winners: [], // 中奖记录
             lastDrawTime: null, // 上次抽奖时间
+            drawsLeft: 2, // 剩余抽奖次数
             settings: {
                 lotterySpeed: 5, // 抽奖速度（1-10，10最快）
                 enableDrawSound: true, // 抽奖音效
                 enableWinSound: true, // 中奖音效
                 enableFireworks: true, // 烟花特效
-                winRate: 0.001 // 中奖率0.1%
             }
         };
  
@@ -326,6 +351,8 @@
             prizeName: document.getElementById('prizeName'),
             countdownContainer: document.getElementById('countdownContainer'),
             countdownTime: document.getElementById('countdownTime'),
+            drawsLeftContainer: document.getElementById('drawsLeftContainer'),
+            drawsLeft: document.getElementById('drawsLeft'),
              
             // 中奖名单界面元素
             winnersScreen: document.getElementById('winnersScreen'),
@@ -375,41 +402,58 @@
 
         // 更新奖品显示
         function updatePrizeDisplay() {
-            elements.prizeName.textContent = prize.name;
-            const prizeIcon = document.querySelector('.prize-icon i');
-            if (prizeIcon) {
-                prizeIcon.className = `fa ${prize.icon}`;
-            }
+            elements.prizeName.textContent = "年VIP会员 / 周VIP会员";
         }
  
         // 检查是否可以抽奖
         function checkDrawAvailability() {
-            if (!data.lastDrawTime) {
-                state.canDraw = true;
-                elements.countdownContainer.classList.add('hidden');
-                elements.startButton.disabled = false;
-                return;
-            }
-            
-            const now = new Date().getTime();
-            const lastDraw = new Date(data.lastDrawTime).getTime();
-            const twentyFourHours = 24 * 60 * 60 * 1000; // 24小时毫秒数
-            
-            if (now - lastDraw < twentyFourHours) {
+            // 检查抽奖次数
+            if (data.drawsLeft <= 0) {
                 state.canDraw = false;
                 elements.startButton.disabled = true;
                 elements.startButton.classList.remove('animate-pulse-slow');
                 elements.countdownContainer.classList.remove('hidden');
                 
-                // 计算剩余时间
-                const remainingTime = twentyFourHours - (now - lastDraw);
-                startCountdown(remainingTime);
+                // 检查是否需要重置抽奖次数
+                if (!data.lastDrawTime) {
+                    resetDraws();
+                    return;
+                }
+                
+                const now = new Date().getTime();
+                const lastDraw = new Date(data.lastDrawTime).getTime();
+                const twentyFourHours = 24 * 60 * 60 * 1000; // 24小时毫秒数
+                
+                if (now - lastDraw >= twentyFourHours) {
+                    resetDraws();
+                } else {
+                    // 计算剩余时间
+                    const remainingTime = twentyFourHours - (now - lastDraw);
+                    startCountdown(remainingTime);
+                }
             } else {
                 state.canDraw = true;
                 elements.countdownContainer.classList.add('hidden');
                 elements.startButton.disabled = false;
                 elements.startButton.classList.add('animate-pulse-slow');
             }
+            
+            // 更新抽奖次数显示
+            updateDrawsLeftDisplay();
+        }
+        
+        // 重置抽奖次数
+        function resetDraws() {
+            data.drawsLeft = 2;
+            data.lastDrawTime = null;
+            localStorage.removeItem('lastDrawTime');
+            localStorage.setItem('drawsLeft', data.drawsLeft);
+            checkDrawAvailability();
+        }
+        
+        // 更新抽奖次数显示
+        function updateDrawsLeftDisplay() {
+            elements.drawsLeft.textContent = data.drawsLeft;
         }
         
         // 开始倒计时
@@ -426,10 +470,7 @@
                 
                 if (remainingTime < 0) {
                     clearInterval(countdownInterval);
-                    state.canDraw = true;
-                    elements.startButton.disabled = false;
-                    elements.countdownContainer.classList.add('hidden');
-                    elements.startButton.classList.add('animate-pulse-slow');
+                    resetDraws();
                 }
             }
             
@@ -480,7 +521,7 @@
         // 开始抽奖
         function startLottery() {
             if (!state.canDraw) {
-                alert('24小时内只能抽奖一次，请稍后再试！');
+                alert('今日抽奖次数已用完，请24小时后再试！');
                 return;
             }
             
@@ -538,43 +579,55 @@
             displayWinner(winner);
              
             // 播放中奖音效
-            if (data.settings.enableWinSound && elements.winSound) {
+            if (data.settings.enableWinSound && elements.winSound && winner) {
                 elements.winSound.currentTime = 0;
                 elements.winSound.play().catch(e => console.log('无法播放音效:', e));
             }
              
             // 添加特效
-            if (data.settings.enableFireworks) {
+            if (data.settings.enableFireworks && winner) {
                 createFireworks();
                 createConfetti();
             }
              
-            // 保存中奖记录和抽奖时间
-            saveWinner(winner);
-            data.lastDrawTime = new Date().toISOString();
-            localStorage.setItem('lastDrawTime', data.lastDrawTime);
+            // 保存中奖记录
+            if (winner) {
+                saveWinner(winner);
+            }
+            
+            // 减少抽奖次数
+            data.drawsLeft--;
+            localStorage.setItem('drawsLeft', data.drawsLeft);
+            
+            // 如果是最后一次抽奖，记录抽奖时间
+            if (data.drawsLeft === 0) {
+                data.lastDrawTime = new Date().toISOString();
+                localStorage.setItem('lastDrawTime', data.lastDrawTime);
+            }
             
             // 更新抽奖状态
-            state.canDraw = false;
-            elements.startButton.disabled = true;
-            elements.startButton.classList.remove('animate-pulse-slow');
-            elements.countdownContainer.classList.remove('hidden');
-            
-            // 开始24小时倒计时
-            startCountdown(24 * 60 * 60 * 1000);
+            checkDrawAvailability();
         }
  
         // 选择中奖者
         function selectWinner() {
-            // 0.1%的中奖率
-            const isWinner = Math.random() < data.settings.winRate;
+            // 随机决定是否中奖
+            const randomValue = Math.random();
+            let selectedPrize = null;
             
-            if (isWinner) {
+            // 检查是否中奖（年卡0.1% + 周卡20% = 20.1%总中奖率）
+            if (randomValue < prizes[0].rate) {
+                selectedPrize = prizes[0]; // 年卡
+            } else if (randomValue < prizes[0].rate + prizes[1].rate) {
+                selectedPrize = prizes[1]; // 周卡
+            }
+            
+            if (selectedPrize) {
                 const randomIndex = Math.floor(Math.random() * data.participants.length);
                 return {
                     name: data.participants[randomIndex],
-                    prize: prize.name,
-                    value: prize.value
+                    prize: selectedPrize.name,
+                    value: selectedPrize.value
                 };
             } else {
                 return null;
@@ -793,7 +846,7 @@
  
         // 加载示例参与者名单
         function loadExampleParticipants() {
-            const exampleNames = ['年VIP', '谢谢惠顾', '年VIP', '谢谢惠顾', '年VIP', '谢谢惠顾', '年VIP', '谢谢惠顾', '年VIP', '谢谢惠顾'];
+            const exampleNames = ['年VIP', '谢谢惠顾', '周VIP', '谢谢惠顾', '年VIP', '谢谢惠顾', '周VIP', '谢谢惠顾', '年VIP', '谢谢惠顾'];
             data.participants = exampleNames;
             saveData();
         }
@@ -851,6 +904,12 @@
             const savedLastDrawTime = localStorage.getItem('lastDrawTime');
             if (savedLastDrawTime) {
                 data.lastDrawTime = savedLastDrawTime;
+            }
+            
+            // 加载剩余抽奖次数
+            const savedDrawsLeft = localStorage.getItem('drawsLeft');
+            if (savedDrawsLeft) {
+                data.drawsLeft = parseInt(savedDrawsLeft);
             }
         }
  
