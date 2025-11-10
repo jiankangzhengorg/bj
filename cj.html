@@ -305,13 +305,13 @@
         const prizes = [
             {
                 name: "年VIP会员",
-                value: "¥999",
+                value: "¥***",
                 icon: "fa-crown",
                 rate: 0.001 // 0.1%中奖率
             },
             {
                 name: "周VIP会员",
-                value: "¥99",
+                value: "¥**",
                 icon: "fa-star",
                 rate: 0.1 // 10%中奖率
             }
@@ -324,7 +324,7 @@
             lastDrawTime: null, // 上次抽奖时间
             drawsLeft: 2, // 剩余抽奖次数
             settings: {
-                lotterySpeed: 5, // 抽奖速度（1-10，10最快）
+                lotterySpeed: 3, // 抽奖速度（1-10，10最快）
                 enableDrawSound: true, // 抽奖音效
                 enableWinSound: true, // 中奖音效
                 enableFireworks: true, // 烟花特效
@@ -846,7 +846,7 @@
  
         // 加载示例参与者名单
         function loadExampleParticipants() {
-            const exampleNames = ['年VIP', '谢谢惠顾', '周VIP', '谢谢惠顾', '年VIP', '谢谢惠顾', '周VIP', '谢谢惠顾', '年VIP', '周vip'];
+            const exampleNames = ['年VIP', '周VIP', '周VIP', '谢谢惠顾', '年VIP', '周VIP', '周VIP', '谢谢惠顾', '年VIP', '周vip'];
             data.participants = exampleNames;
             saveData();
         }
@@ -988,6 +988,7 @@
     </script>
 </body>
 </html>
+
 
 
 
