@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shukeyun - 双11特惠</title>
+    <title>Shukeyun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
@@ -121,7 +121,21 @@
                 50% { transform: scale(1.05); }
                 100% { transform: scale(1); }
             }
-            /* 移除流光字体样式 */
+            .流光字体 {
+                background: linear-gradient(90deg, #3B82F6, #8B5CF6, #10B981, #F97316, #EF4444);
+                background-size: 300% 300%;
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                animation: flow 8s ease infinite;
+                display: inline-block;
+                font-weight: bold;
+            }
+            @keyframes flow {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
             .top-checkbox {
                 position: absolute;
                 top: 1rem;
@@ -151,76 +165,10 @@
                 30%, 50%, 70% { transform: translateX(-3px); }
                 40%, 60% { transform: translateX(3px); }
             }
-            
-            /* 双11主题样式 */
-            .double11-bg {
-                background: linear-gradient(135deg, #ff3c3c 0%, #ff7b00 50%, #ff3c3c 100%);
-                background-size: 200% 200%;
-                animation: gradientShift 5s ease infinite;
-            }
-            @keyframes gradientShift {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-            .double11-decoration {
-                position: absolute;
-                z-index: 0;
-                opacity: 0.7;
-            }
-            .double11-title {
-                background: linear-gradient(45deg, #ffeb3b, #ff9800, #ff5722);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-                font-weight: bold;
-            }
-            .double11-badge {
-                background: linear-gradient(45deg, #ff3c3c, #ff7b00);
-                color: white;
-                font-weight: bold;
-                border-radius: 4px;
-                padding: 2px 6px;
-                font-size: 0.7rem;
-                position: absolute;
-                top: -8px;
-                right: -8px;
-                transform: rotate(10deg);
-                animation: badgePulse 1.5s infinite;
-            }
-            @keyframes badgePulse {
-                0%, 100% { transform: rotate(10deg) scale(1); }
-                50% { transform: rotate(10deg) scale(1.1); }
-            }
-            .falling-item {
-                position: fixed;
-                top: -50px;
-                z-index: 0;
-                animation: falling linear forwards;
-                opacity: 0.7;
-            }
-            @keyframes falling {
-                to {
-                    transform: translateY(100vh) rotate(360deg);
-                }
-            }
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans flex flex-col items-center p-3 py-8 relative">
-    <!-- 双11背景装饰元素 -->
-    <div class="double11-bg fixed inset-0 -z-10"></div>
-    
-    <!-- 飘落的双11元素 -->
-    <div id="fallingElements"></div>
-    
-    <!-- 双11装饰图案 -->
-    <div class="double11-decoration top-10 left-5 text-4xl">🎁</div>
-    <div class="double11-decoration top-20 right-10 text-3xl">🛒</div>
-    <div class="double11-decoration bottom-20 left-10 text-5xl">💰</div>
-    <div class="double11-decoration bottom-10 right-20 text-4xl">🎉</div>
-
+<body class="bg-gray-50 min-h-screen font-sans flex flex-col items-center justify-center p-3 py-8 relative">
     <!-- 左上角勾选框 -->
     <div class="top-checkbox">
         <label class="inline-flex items-center cursor-pointer">
@@ -229,38 +177,37 @@
         </label>
     </div>
 
-    <div class="container max-w-6xl w-full relative z-10">
+    <div class="container max-w-6xl w-full">
         <!-- 标题区域 -->
         <div class="text-center mb-6">
-            <h1 class="text-[clamp(1.3rem,3vw,1.8rem)] font-bold text-white mb-2">双11特惠来袭！ 11.11-11-18· 我们希望用良好的服务获得用户的青睐，并为顾客而存在！</h1>
-            <p class="text-white max-w-xl mx-auto text-sm mb-4 bg-black bg-opacity-30 p-2 rounded-lg">
-                <!-- 移除了流光字体类，改为普通白色文字 -->
-                <span>1-双11当天中奖概率上调，当天抽奖次数+1，2-购买年卡送两张月卡【年卡用户赠送win版本美达通】3-购买月卡送一张周卡，初次使用记得看使用文档简单阅读下，请安卓IOS用户各自下载App使用，下载密码:0000</span>
+            <h1 class="text-[clamp(1.3rem,3vw,1.8rem)] font-bold text-gray-800 mb-2">我们希望用良好的服务获得用户的青睐，并为顾客而存在！</h1>
+            <p class="text-gray-600 max-w-xl mx-auto text-sm mb-4">
+                <span class="流光字体">@增加异步刷新同步，维护后无法进入的点同步再进可以解决百分之95的问题，初次使用记得看使用文档简单阅读下，请安卓IOS用户各自下载App使用，下载密码:0000</span>
             </p>
             
             <!-- 安全运行时间显示 -->
             <div class="mb-4">
-                <div class="uptime-display bg-white card-shadow color-transition border border-primary bg-opacity-90">
+                <div class="uptime-display bg-white card-shadow color-transition border border-primary">
                     陪宝宝们度过: <span id="uptime" class="font-semibold text-primaryDark">0天 00:00:00</span>
                 </div>
             </div>
             
             <!-- 刷新同步按钮 -->
             <div class="mb-4 flex justify-center gap-2">
-                <button id="refreshBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primaryDark transition-colors text-sm flex items-center justify-center gap-2 shadow-lg">
+                <button id="refreshBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primaryDark transition-colors text-sm flex items-center justify-center gap-2">
                     <i class="fa fa-refresh"></i>
                     <span>刷新同步</span>
                 </button>
                 
                 <!-- 新增的幸运抽奖按钮 -->
-                <button id="lotteryBtn" class="px-4 py-2 bg-quaternary text-white rounded-lg hover:bg-quaternaryDark transition-colors text-sm flex items-center justify-center gap-2 shadow-lg">
+                <button id="lotteryBtn" class="px-4 py-2 bg-quaternary text-white rounded-lg hover:bg-quaternaryDark transition-colors text-sm flex items-center justify-center gap-2">
                     <i class="fa fa-gift"></i>
                     <span>幸运一发</span>
                 </button>
             </div>
             
             <!-- 颜色切换按钮 -->
-            <div class="flex justify-center gap-2 flex-wrap bg-black bg-opacity-20 p-2 rounded-lg">
+            <div class="flex justify-center gap-2 flex-wrap">
                 <button data-color="primary" class="w-7 h-7 rounded-full bg-primary border-2 border-white shadow-md color-btn active ring-2 ring-primary ring-offset-2"></button>
                 <button data-color="secondary" class="w-7 h-7 rounded-full bg-secondary border-2 border-white shadow-md color-btn"></button>
                 <button data-color="tertiary" class="w-7 h-7 rounded-full bg-tertiary border-2 border-white shadow-md color-btn"></button>
@@ -270,26 +217,26 @@
         </div>
         
         <!-- 卡片导航区域 -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <!-- 卡片1 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary bg-opacity-95" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0 double11-badge">
-                    购卡巨惠
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
+                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
+                    极速开工
                 </div>
                 <a href="http://www.cxjkz.space:5001//www43136177/login" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-globe text-xl"></i>
                         </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark double11-title">开工1</h3>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">开工1</h3>
                         <p class="text-gray-600 text-xs">点击进入</p>
                     </div>
                 </a>
             </div>
             
             <!-- 卡片2 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary bg-opacity-95" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0 double11-badge">
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
+                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
                     年卡专享
                 </div>
                 <a href="http://www.jkzzxcxsd.online:5001/www43136177/login" class="card-link">
@@ -297,87 +244,81 @@
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-external-link text-xl"></i>
                         </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark double11-title">开工2</h3>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">开工2</h3>
                         <p class="text-gray-600 text-xs">秒级加载-大带宽</p>
                     </div>
                 </a>
             </div>
             
             <!-- 卡片3 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary bg-opacity-95" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0 double11-badge">
-                    安卓下载
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
+                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
+                    安卓APK
                 </div>
                 <a href="https://wwrl.lanzn.com/iYZla38o864j" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-android text-xl"></i>
                         </div>
-                        <h3 class="font-semibold text-xs sm:text-sm mb-1 color-transition text-primaryDark double11-title">安卓APK（专线）</h3>
+                        <h3 class="font-semibold text-xs sm:text-sm mb-1 color-transition text-primaryDark">安卓APK（专线）</h3>
                         <p class="text-gray-600 text-xs">点击下载</p>
                     </div>
                 </a>
             </div>
             
             <!-- 卡片4 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary bg-opacity-95" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0 double11-badge">
-                 IOS下载
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
+                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
+                    IOS-版本
                 </div>
                 <a href="https://wwrl.lanzn.com/iZxWY38o6qpi" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-apple text-xl"></i>
                         </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark double11-title">IOS（专线）</h3>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">IOS（专线）</h3>
                         <p class="text-gray-600 text-xs">点击下载</p>
                     </div>
                 </a>
             </div>
 
              <!-- 卡片DL入口 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary bg-opacity-95" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0 double11-badge">
-                    次数开户
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
+                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
+                    YunOS
                 </div>
                 <a href="https://ccc.ngrok.app/login" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-globe text-xl"></i>
                         </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark double11-title">Start</h3>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">Start</h3>
                         <p class="text-gray-600 text-xs">点击进入</p>
                     </div>
                 </a>
             </div>
             
             <!-- 卡片5 - 使用教程 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary bg-opacity-95" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0 double11-badge">
-                    使用教程
-                </div>
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
                 <a href="jc.html" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-book text-xl"></i>
                         </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark double11-title">使用教程</h3>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">使用教程</h3>
                         <p class="text-gray-600 text-xs">新手必看</p>
                     </div>
                 </a>
             </div>
 
             <!-- 卡片6 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard border-2 border-transparent bg-opacity-95">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0 double11-badge">
-                    双11特惠
-                </div>
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard border-2 border-transparent">
                 <a href="hl.html" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-desktop text-xl"></i>
                         </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark double11-title">多元业务展示</h3>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">多元业务展示</h3>
                         <p class="text-gray-600 text-xs">业务报价联系管理员</p>
                     </div>
                 </a>
@@ -386,16 +327,13 @@
 
         <!-- 额外卡片（默认隐藏） -->
         <div id="extraCardContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4 hidden">
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard border-2 border-primary bg-opacity-95">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0 double11-badge">
-                    末日堡垒
-                </div>
+            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard border-2 border-primary">
                 <a href="http://www.jkzzxcxsd.online:5001/www43136177/login" class="card-link">
                     <div class="card-content">
                         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
                             <i class="fa fa-rocket text-xl"></i>
                         </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark double11-title">避难所开启</h3>
+                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">避难所开启</h3>
                         <p class="text-gray-600 text-xs">点击进入</p>
                     </div>
                 </a>
@@ -517,28 +455,8 @@
         // 初始化自动刷新
         initAutoRefresh();
         
-        // 双11飘落元素
-        function createFallingElements() {
-            const container = document.getElementById('fallingElements');
-            const emojis = ['🎁', '🛒', '💰', '🎉', '📦', '💸', '🤑'];
-            
-            for (let i = 0; i < 15; i++) {
-                const item = document.createElement('div');
-                item.className = 'falling-item';
-                item.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                item.style.left = Math.random() * 100 + 'vw';
-                item.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                item.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                item.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(item);
-            }
-        }
-        
         // 颜色切换功能
         document.addEventListener('DOMContentLoaded', function() {
-            // 创建飘落元素
-            createFallingElements();
-            
             // 获取所有需要颜色更新的元素
             const colorButtons = document.querySelectorAll('.color-btn');
             const iconContainers = document.querySelectorAll('.card .w-14');
