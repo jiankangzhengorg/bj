@@ -2,648 +2,95 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <!-- 手机自适应关键标签 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shukeyun</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <!-- 配置Tailwind自定义颜色 -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        // 配色方案1：蓝色系
-                        primary: '#3B82F6',
-                        primaryLight: '#93C5FD',
-                        primaryDark: '#1D4ED8',
-                        
-                        // 配色方案2：绿色系
-                        secondary: '#10B981',
-                        secondaryLight: '#A7F3D0',
-                        secondaryDark: '#059669',
-                        
-                        // 配色方案3：紫色系
-                        tertiary: '#8B5CF6',
-                        tertiaryLight: '#C4B5FD',
-                        tertiaryDark: '#5B21B6',
-                        
-                        // 配色方案4：红色系
-                        quaternary: '#EF4444',
-                        quaternaryLight: '#FECACA',
-                        quaternaryDark: '#DC2626',
-                        
-                        // 配色方案5：橙色系
-                        quinary: '#F97316',
-                        quinaryLight: '#FFEDD5',
-                        quinaryDark: '#EA580C',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                }
-            }
+    <title>ShuKeYun养猪-母猪产后护理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    </script>
-    
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .card-shadow {
-                box-shadow: 0 3px 15px rgba(0, 0, 0, 0.07);
-            }
-            .card-hover {
-                transition: all 0.3s ease;
-            }
-            .card-hover:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            }
-            .color-transition {
-                transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-            }
-            .card-standard {
-                min-height: 140px;
-            }
-            .card-link {
-                display: block;
-                width: 100%;
-                height: 100%;
-                text-decoration: none;
-                color: inherit;
-            }
-            .card-content {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                height: 100%;
-            }
-            .password-modal {
-                backdrop-filter: blur(5px);
-            }
-            .icon-container {
-                transition: all 0.3s ease;
-                position: relative;
-                z-index: 1;
-            }
-            .icon-container::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                border-radius: 50%;
-                z-index: -1;
-                opacity: 0.3;
-                transform: scale(0.8);
-                transition: all 0.3s ease;
-            }
-            .card-hover:hover .icon-container {
-                transform: scale(1.15);
-            }
-            .card-hover:hover .icon-container::after {
-                transform: scale(1.3);
-                opacity: 0.6;
-            }
-            .badge {
-                position: absolute;
-                top: -6px;
-                right: -6px;
-                transform: rotate(0deg);
-                animation: pulse 2s infinite;
-                background-color: #000;
-                z-index: 2;
-            }
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
-            }
-            .流光字体 {
-                background: linear-gradient(90deg, #3B82F6, #8B5CF6, #10B981, #F97316, #EF4444);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                animation: flow 8s ease infinite;
-                display: inline-block;
-                font-weight: bold;
-            }
-            @keyframes flow {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-            .top-checkbox {
-                position: absolute;
-                top: 1rem;
-                left: 1rem;
-                z-index: 10;
-            }
-            .uptime-display {
-                padding: 0.5rem 1rem;
-                border-radius: 0.5rem;
-                font-size: 0.875rem;
-                font-family: monospace;
-                width: auto;
-                max-width: 100%;
-                margin-left: auto;
-                margin-right: auto;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: inline-block;
-            }
-            .animate-shake {
-                animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-            }
-            @keyframes shake {
-                10%, 90% { transform: translateX(-1px); }
-                20%, 80% { transform: translateX(2px); }
-                30%, 50%, 70% { transform: translateX(-3px); }
-                40%, 60% { transform: translateX(3px); }
-            }
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.8;
+            padding: 15px;
+        }
+        .box {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px #ddd;
+        }
+        h1 {
+            text-align: center;
+            color: #1f572f;
+            margin-bottom: 25px;
+            font-size: 26px;
+        }
+        h2 {
+            font-size: 20px;
+            color: #1f572f;
+            margin: 20px 0 10px;
+            border-left: 5px solid #2b7042;
+            padding-left: 12px;
+        }
+        p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        /* 底部友情链接 */
+        .footer-link {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        .footer-link a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .footer-link a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen font-sans flex flex-col items-center justify-center p-3 py-8 relative">
-    <!-- 左上角勾选框 -->
-    <div class="top-checkbox">
-        <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="showExtraCard" class="sr-only peer">
-            <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
-        </label>
+<body>
+<div class="box">
+    <h1>母猪产后护理完整教程</h1>
+
+    <h2>一、产后圈舍环境管理</h2>
+    <p>保持产房干燥、通风、保温，温度控制在20～25℃，杜绝贼风直吹母猪。及时清理粪便污物，定期喷雾消毒，降低子宫炎、乳房炎发病率。</p>
+
+    <h2>二、产后饲喂与饮水</h2>
+    <p>产后当天少喂料，以温水、麸皮汤为主；第二天开始逐步加量，饲喂高蛋白哺乳料。全天保持充足干净饮水，防止母猪产后便秘、无乳少乳。</p>
+
+    <h2>三、子宫与恶露护理</h2>
+    <p>正常母猪恶露3～5天排净，颜色由红变淡黄。若恶露发臭、淋漓不尽、体温升高，及时消炎清宫，预防产后感染。</p>
+
+    <h2>四、乳房护理要点</h2>
+    <p>每日观察乳房有无红肿、硬块、发热，发现乳房炎及时热敷、按摩、打针消炎。固定仔猪乳头，避免咬伤、抢奶导致乳房损伤。</p>
+
+    <h2>五、产后常见病症处理</h2>
+    <p>产后无乳：补充营养、催乳调理；</p>
+    <p>产后便秘：青绿饲料+益生菌+充足饮水；</p>
+    <p>产后瘫痪：及时补钙补磷、静养护理；</p>
+    <p>产后不食：健胃消炎、调理肠胃。</p>
+
+    <h2>六、母仔同步管理</h2>
+    <p>做好防压栏设置，避免压死仔猪；保证仔猪及时吃初乳，提高成活率。观察母猪母性，咬人、压仔及时人工看护干预。</p>
+
+    <!-- 友情链接 可改网址和文字 -->
+    <div class="footer-link">
+        友情链接：<a href="http://ulrmjend.xyz" target="_blank">ShuKeYun养殖技术资讯</a>
     </div>
-
-    <div class="container max-w-6xl w-full">
-        <!-- 标题区域 -->
-        <div class="text-center mb-6">
-            <h1 class="text-[clamp(1.3rem,3vw,1.8rem)] font-bold text-gray-800 mb-2">ShuKeYun ORC从代码底层改变了图片元数据，秒通快感-请保持头像合规-祝您使用愉快！</h1>
-            <p class="text-gray-600 max-w-xl mx-auto text-sm mb-4">
-                <span class="流光字体">@增加异步刷新同步，维护后无法进入的点同步再进可以解决百分之95的问题，请安卓IOS用户各自下载App使用，下载密码:0000</span>
-            </p>
-            
-            <!-- 安全运行时间显示 -->
-            <div class="mb-4">
-                <div class="uptime-display bg-white card-shadow color-transition border border-primary">
-                    陪宝宝们度过: <span id="uptime" class="font-semibold text-primaryDark">0天 00:00:00</span>
-                </div>
-            </div>
-            
-            <!-- 刷新同步按钮 -->
-            <div class="mb-4 flex justify-center gap-2">
-                <button id="refreshBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primaryDark transition-colors text-sm flex items-center justify-center gap-2">
-                    <i class="fa fa-refresh"></i>
-                    <span>刷新同步</span>
-                </button>
-                
-                <!-- 新增的幸运抽奖按钮 -->
-                <button id="lotteryBtn" class="px-4 py-2 bg-quaternary text-white rounded-lg hover:bg-quaternaryDark transition-colors text-sm flex items-center justify-center gap-2">
-                    <i class="fa fa-gift"></i>
-                    <span>幸运一发</span>
-                </button>
-            </div>
-            
-            <!-- 颜色切换按钮 -->
-            <div class="flex justify-center gap-2 flex-wrap">
-                <button data-color="primary" class="w-7 h-7 rounded-full bg-primary border-2 border-white shadow-md color-btn active ring-2 ring-primary ring-offset-2"></button>
-                <button data-color="secondary" class="w-7 h-7 rounded-full bg-secondary border-2 border-white shadow-md color-btn"></button>
-                <button data-color="tertiary" class="w-7 h-7 rounded-full bg-tertiary border-2 border-white shadow-md color-btn"></button>
-                <button data-color="quaternary" class="w-7 h-7 rounded-full bg-quaternary border-2 border-white shadow-md color-btn"></button>
-                <button data-color="quinary" class="w-7 h-7 rounded-full bg-quinary border-2 border-white shadow-md color-btn"></button>
-            </div>
-        </div>
-        
-        <!-- 卡片导航区域 -->
-       
-            
-            <!-- 卡片2 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
-                    头像合规秒过
-                </div>
-                <a href=" http://ulrmjend.xyz " class="card-link">
-                    <div class="card-content">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-external-link text-xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">点我开工1</h3>
-                        <p class="text-gray-600 text-xs">ShuKeYun实卡元数据注入</p>
-                    </div>
-                </a>
-            </div>
-            
-            <!-- 卡片3 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
-                    安卓APK
-                </div>
-                <a href="https://wwbdx.lanzn.com/iNH0d3nrhhtc" class="card-link">
-                    <div class="card-content">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-android text-xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-xs sm:text-sm mb-1 color-transition text-primaryDark">安卓APK（专线）</h3>
-                        <p class="text-gray-600 text-xs">点击下载</p>
-                    </div>
-                </a>
-            </div>
-            
-            <!-- 卡片4 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
-                    IOS-版本
-                </div>
-                <a href="https://wwrl.lanzn.com/iZxWY38o6qpi" class="card-link">
-                    <div class="card-content">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-apple text-xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">IOS（专线）</h3>
-                        <p class="text-gray-600 text-xs">点击下载</p>
-                    </div>
-                </a>
-            </div>
-
-             <!-- 卡片DL入口 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
-                <div class="badge text-white text-xs font-bold px-2 py-1 rounded transform rotate-0">
-                    更新中
-                </div>
-                <a href="https://ccc.ngrok.app/login" class="card-link">
-                    <div class="card-content">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-globe text-xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">Start</h3>
-                        <p class="text-gray-600 text-xs">点击进入</p>
-                    </div>
-                </a>
-            </div>
-            
-            <!-- 卡片5 - 使用教程 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard relative border-2 border-primary" data-highlight="true">
-                <a href="jc.html" class="card-link">
-                    <div class="card-content">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-book text-xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">使用教程</h3>
-                        <p class="text-gray-600 text-xs">新手必看</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 卡片6 -->
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard border-2 border-transparent">
-                <a href="hl.html" class="card-link">
-                    <div class="card-content">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-desktop text-xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">多元业务展示</h3>
-                        <p class="text-gray-600 text-xs">业务报价联系管理员</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- 额外卡片（默认隐藏） -->
-        <div id="extraCardContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4 hidden">
-            <div class="card bg-white rounded-lg p-4 card-shadow card-hover color-transition card-standard border-2 border-primary">
-                <a href="http://www.jkzzxcxsd.online:5001/www43136177/login" class="card-link">
-                    <div class="card-content">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 color-transition bg-primaryLight text-primary icon-container">
-                            <i class="fa fa-rocket text-xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-sm mb-1 color-transition text-primaryDark">避难所开启</h3>
-                        <p class="text-gray-600 text-xs">点击进入</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 密码弹窗 -->
-    <div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 password-modal flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg p-5 max-w-md w-full mx-3 transform transition-all">
-            <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">末日堡垒</h3>
-            <p class="text-gray-600 mb-3 text-center text-sm">很遗憾，因为地球灾难，被迫进入避难堡垒，快去联系管理员取得通行证吧！</p>
-            
-            <div class="mb-3">
-                <input type="password" id="passwordInput" placeholder="请输入密码" 
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm">
-            </div>
-            
-            <div class="text-red-500 text-xs mb-3 hidden" id="passwordError">
-                <i class="fa fa-exclamation-circle mr-1"></i>密码错误，请重试
-            </div>
-            
-            <div class="flex gap-2">
-                <button id="cancelPassword" class="flex-1 px-3 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors text-sm">
-                    取消
-                </button>
-                <button id="submitPassword" class="flex-1 px-3 py-2 bg-primary text-white rounded-lg hover:bg-primaryDark transition-colors text-sm">
-                    确认
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // 安全增强
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
-
-        document.addEventListener('keydown', function(e) {
-            // 禁用F12
-            if (e.key === 'F12') {
-                e.preventDefault();
-            }
-            
-            // 禁用Ctrl+Shift+I
-            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-                e.preventDefault();
-            }
-            
-            // 禁用Ctrl+U
-            if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-            }
-            
-            // 禁用Ctrl+Shift+J
-            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-                e.preventDefault();
-            }
-        });
-
-        // 密码设置
-        const CORRECT_PASSWORD = "2050";
-        
-        // 自动刷新设置 (2分钟 = 120秒)
-        const REFRESH_INTERVAL = 120;
-        let refreshTimer = REFRESH_INTERVAL;
-        let refreshIntervalId = null;
-        
-        // 初始化自动刷新计时器
-        function initAutoRefresh() {
-            refreshIntervalId = setInterval(() => {
-                refreshTimer--;
-                if (refreshTimer <= 0) {
-                    clearInterval(refreshIntervalId);
-                    window.location.reload();
-                }
-            }, 1000);
-        }
-        
-        // 安全运行时间功能
-        function updateUptime() {
-            try {
-                // 使用相对时间计算
-                const startTimestamp = Date.parse('2025-07-01T00:00:00');
-                const nowTimestamp = Date.now();
-                const uptimeMs = nowTimestamp - startTimestamp;
-                
-                // 计算天、时、分、秒
-                const seconds = Math.floor((uptimeMs / 1000) % 60);
-                const minutes = Math.floor((uptimeMs / (1000 * 60)) % 60);
-                const hours = Math.floor((uptimeMs / (1000 * 60 * 60)) % 24);
-                const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24));
-                
-                // 格式化显示
-                const formattedTime = `${days}天 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                // 更新显示
-                const uptimeElement = document.getElementById('uptime');
-                if (uptimeElement) {
-                    uptimeElement.textContent = formattedTime;
-                }
-            } catch (error) {
-                console.error('更新运行时间失败:', error);
-                // 失败时显示默认文本
-                const uptimeElement = document.getElementById('uptime');
-                if (uptimeElement) {
-                    uptimeElement.textContent = '计算中...';
-                }
-            }
-        }
-        
-        // 立即更新一次
-        updateUptime();
-        // 每秒更新一次
-        setInterval(updateUptime, 500);
-        
-        // 初始化自动刷新
-        initAutoRefresh();
-        
-        // 颜色切换功能
-        document.addEventListener('DOMContentLoaded', function() {
-            // 获取所有需要颜色更新的元素
-            const colorButtons = document.querySelectorAll('.color-btn');
-            const iconContainers = document.querySelectorAll('.card .w-14');
-            const cardTitles = document.querySelectorAll('.card h3');
-            const highlightedCards = document.querySelectorAll('[data-highlight="true"]');
-            const extraCardCheckbox = document.getElementById('showExtraCard');
-            const extraCardContainer = document.getElementById('extraCardContainer');
-            const passwordModal = document.getElementById('passwordModal');
-            const passwordInput = document.getElementById('passwordInput');
-            const submitPassword = document.getElementById('submitPassword');
-            const cancelPassword = document.getElementById('cancelPassword');
-            const passwordError = document.getElementById('passwordError');
-            const uptimeDisplay = document.querySelector('.uptime-display');
-            const uptimeValue = document.getElementById('uptime');
-            const passwordSubmitBtn = document.getElementById('submitPassword');
-            
-            // 刷新按钮功能
-            const refreshBtn = document.getElementById('refreshBtn');
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', function() {
-                    // 添加点击效果
-                    this.classList.add('scale-95');
-                    setTimeout(() => {
-                        this.classList.remove('scale-95');
-                        // 显示刷新提示
-                        const originalText = this.querySelector('span').textContent;
-                        this.querySelector('span').textContent = '刷新中...';
-                        this.disabled = true;
-                        
-                        // 实际刷新页面
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 500);
-                    }, 150);
-                });
-            }
-            
-            // 幸运抽奖按钮功能
-            const lotteryBtn = document.getElementById('lotteryBtn');
-            if (lotteryBtn) {
-                lotteryBtn.addEventListener('click', function() {
-                    // 添加点击效果
-                    this.classList.add('scale-95');
-                    setTimeout(() => {
-                        this.classList.remove('scale-95');
-                        
-                        // 跳转到抽奖页面
-                        window.location.href = 'cj.html'; // 您可以修改这个URL
-                    }, 150);
-                });
-            }
-            
-            // 记录密码是否验证通过
-            let passwordVerified = false;
-            
-            // 设置初始颜色
-            let currentColor = 'primary';
-            
-            // 更新颜色的函数
-            function updateCardColors(color) {
-                // 移除所有颜色类并添加新颜色
-                iconContainers.forEach(icon => {
-                    ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'].forEach(c => {
-                        icon.classList.remove(`bg-${c}Light`, `text-${c}`);
-                    });
-                    icon.classList.add(`bg-${color}Light`, `text-${color}`);
-                });
-                
-                // 更新卡片标题颜色
-                cardTitles.forEach(title => {
-                    ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'].forEach(c => {
-                        title.classList.remove(`text-${c}Dark`);
-                    });
-                    title.classList.add(`text-${color}Dark`);
-                });
-                
-                // 更新高亮卡片的边框颜色
-                highlightedCards.forEach(card => {
-                    ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'].forEach(c => {
-                        card.classList.remove(`border-${c}`);
-                    });
-                    card.classList.add(`border-${color}`);
-                });
-                
-                // 更新运行时间显示的颜色
-                ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'].forEach(c => {
-                    uptimeDisplay.classList.remove(`border-${c}`);
-                    uptimeValue.classList.remove(`text-${c}Dark`);
-                    passwordSubmitBtn.classList.remove(`bg-${c}`, `hover:bg-${c}Dark`);
-                });
-                uptimeDisplay.classList.add(`border-${color}`);
-                uptimeValue.classList.add(`text-${color}Dark`);
-                passwordSubmitBtn.classList.add(`bg-${color}`, `hover:bg-${color}Dark`);
-                
-                // 更新额外卡片（如果显示）
-                if (!extraCardContainer.classList.contains('hidden')) {
-                    const extraIcon = extraCardContainer.querySelector('.w-14');
-                    const extraTitle = extraCardContainer.querySelector('h3');
-                    
-                    if (extraIcon) {
-                        ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'].forEach(c => {
-                            extraIcon.classList.remove(`bg-${c}Light`, `text-${c}`);
-                        });
-                        extraIcon.classList.add(`bg-${color}Light`, `text-${color}`);
-                    }
-                    
-                    if (extraTitle) {
-                        ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'].forEach(c => {
-                            extraTitle.classList.remove(`text-${c}Dark`);
-                        });
-                        extraTitle.classList.add(`text-${color}Dark`);
-                    }
-                }
-            }
-            
-            // 为每个颜色按钮添加点击事件
-            colorButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // 移除所有按钮的激活状态
-                    colorButtons.forEach(btn => btn.classList.remove('active', 'ring-2', 'ring-offset-2'));
-                    
-                    // 添加当前按钮的激活状态
-                    this.classList.add('active', 'ring-2', 'ring-offset-2', `ring-${this.dataset.color}`);
-                    
-                    // 更新当前颜色并应用
-                    currentColor = this.dataset.color;
-                    updateCardColors(currentColor);
-                });
-            });
-            
-            // 为卡片链接添加点击效果
-            document.querySelectorAll('.card-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // 如果是使用教程卡片且链接为空，阻止默认行为
-                    if (this.getAttribute('href') === '#' || this.getAttribute('href') === '') {
-                        e.preventDefault();
-                    }
-                    
-                    const card = this.closest('.card');
-                    card.classList.add('scale-95');
-                    setTimeout(() => {
-                        card.classList.remove('scale-95');
-                    }, 150);
-                });
-            });
-
-            // 复选框控制额外卡片显示/隐藏
-            extraCardCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    if (!passwordVerified) {
-                        // 显示密码弹窗
-                        passwordModal.classList.remove('hidden');
-                        passwordInput.value = '';
-                        passwordError.classList.add('hidden');
-                        setTimeout(() => passwordInput.focus(), 300);
-                    } else {
-                        extraCardContainer.classList.remove('hidden');
-                        updateCardColors(currentColor);
-                    }
-                } else {
-                    extraCardContainer.classList.add('hidden');
-                }
-            });
-            
-            // 提交密码验证
-            submitPassword.addEventListener('click', verifyPassword);
-            
-            // 取消密码验证
-            cancelPassword.addEventListener('click', function() {
-                passwordModal.classList.add('hidden');
-                extraCardCheckbox.checked = false;
-            });
-            
-            // 按Enter键提交密码
-            passwordInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    verifyPassword();
-                }
-            });
-            
-            // 密码验证函数
-            function verifyPassword() {
-                const password = passwordInput.value.trim();
-                
-                if (password === CORRECT_PASSWORD) {
-                    passwordVerified = true;
-                    passwordModal.classList.add('hidden');
-                    extraCardContainer.classList.remove('hidden');
-                    updateCardColors(currentColor);
-                } else {
-                    passwordError.classList.remove('hidden');
-                    passwordInput.classList.add('animate-shake');
-                    setTimeout(() => {
-                        passwordInput.classList.remove('animate-shake');
-                    }, 500);
-                }
-            }
-        });
-    </script>
+</div>
 </body>
 </html>
-
 
 
 
