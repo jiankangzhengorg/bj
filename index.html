@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 手机自适应关键标签 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShuKeYun养猪-母猪产后护理</title>
     <style>
@@ -17,6 +16,23 @@
             color: #333;
             line-height: 1.8;
             padding: 15px;
+        }
+        /* 顶部刷新按钮样式 */
+        .refresh-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #refreshBtn {
+            padding: 10px 25px;
+            background: #1f572f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #refreshBtn:active {
+            background: #143d21;
         }
         .box {
             max-width: 900px;
@@ -60,6 +76,12 @@
     </style>
 </head>
 <body>
+
+<!-- 顶部刷新按钮 -->
+<div class="refresh-bar">
+    <button id="refreshBtn">🔄 刷新同步</button>
+</div>
+
 <div class="box">
     <h1>母猪产后护理完整教程</h1>
 
@@ -89,6 +111,14 @@
         友情链接：<a href="http://cbslhpaq.xyz" target="_blank">ShuKeYun养殖技术资讯</a>
     </div>
 </div>
+
+<script>
+    // 刷新按钮功能
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+        location.reload();
+    });
+</script>
+
 </body>
 </html>
 
