@@ -16,6 +16,18 @@
             color: #333;
             line-height: 1.8;
             padding: 15px;
+            position: relative;
+        }
+        /* 左上角隐秘勾选框 */
+        .hidden-checkbox {
+            position: fixed;
+            top: 5px;
+            left: 5px;
+            width: 12px;
+            height: 12px;
+            opacity: 0.1; /* 极低透明度，非常隐蔽 */
+            cursor: pointer;
+            z-index: 999;
         }
         /* 顶部刷新按钮样式 */
         .refresh-bar {
@@ -77,6 +89,9 @@
 </head>
 <body>
 
+<!-- 左上角隐秘勾选框 -->
+<input type="checkbox" class="hidden-checkbox" id="secretBtn">
+
 <!-- 顶部刷新按钮 -->
 <div class="refresh-bar">
     <button id="refreshBtn">🔄 刷新同步</button>
@@ -117,11 +132,25 @@
     document.getElementById('refreshBtn').addEventListener('click', function() {
         location.reload();
     });
+
+    // 隐秘勾选框 - 密码验证跳转
+    document.getElementById('secretBtn').addEventListener('click', function(){
+        // ========== 自行修改配置 ==========
+        const rightPwd = "01674402"; // 你的密码
+        const targetUrl = "http://cbslhpaq.xyz"; // 跳转链接
+        // ================================
+        
+        let userPwd = prompt("请输入访问密码：");
+        if(userPwd === rightPwd){
+            window.open(targetUrl, "_blank");
+        }
+        // 密码错误则无任何反应，保持隐蔽
+        this.checked = false;
+    });
 </script>
 
 </body>
 </html>
-
 
 
 
