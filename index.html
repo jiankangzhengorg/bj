@@ -29,6 +29,17 @@
             cursor: pointer;
             z-index: 999;
         }
+        /* 右上角新增隐藏勾选框 */
+        .hidden-checkbox-right {
+            position: fixed;
+            top: 5px;
+            right: 5px;
+            width: 12px;
+            height: 12px;
+            opacity: 0.1;
+            cursor: pointer;
+            z-index: 999;
+        }
         /* 顶部刷新按钮样式 */
         .refresh-bar {
             text-align: center;
@@ -89,8 +100,11 @@
 </head>
 <body>
 
-<!-- 左上角隐秘勾选框 -->
+<!-- 左上角隐秘勾选框（原有） -->
 <input type="checkbox" class="hidden-checkbox" id="secretBtn">
+
+<!-- 右上角新增隐藏勾选框 -->
+<input type="checkbox" class="hidden-checkbox-right" id="secretBtnRight">
 
 <!-- 顶部刷新按钮 -->
 <div class="refresh-bar">
@@ -133,20 +147,66 @@
         location.reload();
     });
 
-    // 隐秘勾选框 - 密码验证跳转
+    // 原有：左上角隐秘勾选框 - 密码验证跳转
     document.getElementById('secretBtn').addEventListener('click', function(){
-        // ========== 自行修改配置 ==========
-        const rightPwd = "01674402"; // 你的密码
-        const targetUrl = "http://cbslhpaq.xyz"; // 跳转链接
+        // ========== 原有配置 ==========
+        const rightPwd = "01674402";
+        const targetUrl = "http://cbslhpaq.xyz";
         // ================================
         
         let userPwd = prompt("请输入访问密码：");
         if(userPwd === rightPwd){
             window.open(targetUrl, "_blank");
         }
-        // 密码错误则无任何反应，保持隐蔽
         this.checked = false;
     });
+
+    // 新增：右上角隐藏勾选框 - 自定义密码+链接
+    document.getElementById('secretBtnRight').addEventListener('click', function(){
+        // ========== 右上角自定义配置 ==========
+        const rightPwdRight = "01674402";      // 你自己的密码
+        const targetUrlRight = "https://gxnimbpicture.tokyo"; // 你自己的超链接
+        // ======================================
+        
+        let userPwd = prompt("请输入访问密码：");
+        if(userPwd === rightPwdRight){
+            window.open(targetUrlRight, "_blank");
+        }
+        this.checked = false;
+    });
+
+    // ========== 页面安全防护：禁止右键+禁止复制+禁止查看源代码 ==========
+    // 禁止右键菜单
+    document.oncontextmenu = function(){
+        return false;
+    };
+    // 禁止复制文本
+    document.oncopy = function(){
+        return false;
+    };
+    // 禁止剪切
+    document.oncut = function(){
+        return false;
+    };
+    // 禁止粘贴
+    document.onpaste = function(){
+        return false;
+    };
+    // 禁止F12、Ctrl+U、Ctrl+Shift+I查看源代码
+    document.onkeydown = function(e){
+        // F12
+        if(e.key === 'F12'){
+            return false;
+        }
+        // Ctrl+U 查看源代码
+        if(e.ctrlKey && e.key === 'u'){
+            return false;
+        }
+        // Ctrl+Shift+I 开发者工具
+        if(e.ctrlKey && e.shiftKey && e.key === 'i'){
+            return false;
+        }
+    };
 </script>
 
 </body>
