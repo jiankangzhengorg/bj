@@ -18,6 +18,13 @@
             overflow-x: hidden;
             padding: 15px 0;
         }
+
+        /* ========== 核心：整体页面缩小 30% ========== */
+        .page-wrapper {
+            transform: scale(0.7);
+            transform-origin: top center;
+        }
+
         .container {
             max-width: 1300px;
             width: 100%;
@@ -34,7 +41,7 @@
             border: 1px solid #e0e0e0;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         h2 {
             color: #333;
@@ -109,7 +116,7 @@
             color: #fff;
             padding: 15px 25px;
             border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,1);
             transform: translateX(150%);
             transition: transform 0.5s ease;
             z-index: 1000;
@@ -118,7 +125,6 @@
             transform: translateX(0);
         }
 
-        /* 两张卡片固定统一414px原版尺寸，不缩小不变形 */
         .health-certificate {
             width: 414px;
             margin: 0 auto;
@@ -195,7 +201,6 @@
         .dis { display: flex; justify-content: space-between; }
         .error { color: #333; font-weight: bold; }
 
-        /* 手机大屏上下排列，卡片尺寸完全不变 */
         @media (max-width: 1040px) {
             .container {
                 flex-direction: column;
@@ -209,6 +214,9 @@
     </style>
 </head>
 <body oncontextmenu="return false;">
+
+<!-- 全局包裹层，只做缩小 30%，无任何改动 -->
+<div class="page-wrapper">
     <div class="container">
         <div class="form-container">
             <h2>填写个人信息</h2>
@@ -359,136 +367,124 @@
             </div>
         </div>
     </div>
-    
-    <div id="notification" class="notification">
-        <span id="notificationText">操作成功！</span>
-    </div>
-    
-    <script>
-        // 禁用F12、Ctrl+U、复制查看源码
-        document.addEventListener('contextmenu',e=>e.preventDefault());
-        document.addEventListener('keydown',function(e){
-            if(e.key=='F12'||(e.ctrlKey&&e.key.toLowerCase()=='u')||(e.ctrlKey&&e.shiftKey)){
-                e.preventDefault();
-                return false;
-            }
-        });
-        document.addEventListener('selectstart',e=>e.preventDefault());
+</div>
 
-        let userPhotoData = null;
-        let usedCodes = new Set();
+<div id="notification" class="notification">
+    <span id="notificationText">操作成功！</span>
+</div>
 
-        // 9位不重复编号
-        function generateUnique9Digit() {
-            let code;
-            do {
-                code = Math.floor(100000000 + Math.random() * 900000000).toString();
-            } while (usedCodes.has(code));
-            usedCodes.add(code);
-            return code;
+<script>
+    document.addEventListener('contextmenu',e=>e.preventDefault());
+    document.addEventListener('keydown',function(e){
+        if(e.key=='F12'||(e.ctrlKey&&e.key.toLowerCase()=='u')||(e.ctrlKey&&e.shiftKey)){
+            e.preventDefault();
+            return false;
+        }
+    });
+    document.addEventListener('selectstart',e=>e.preventDefault());
+
+    let userPhotoData = null;
+    let usedCodes = new Set();
+
+    function generateUnique9Digit() {
+        let code;
+        do {
+            code = Math.floor(100000000 + Math.random() * 900000000).toString();
+        } while (usedCodes.has(code));
+        usedCodes.add(code);
+        return code;
+    }
+
+    function getAge(birthYear, birthMonth, birthDay){
+        let now = new Date();
+        let birth = new Date(birthYear, birthMonth-1, birthDay);
+        let age = now.getFullYear() - birth.getFullYear();
+        if(now.getMonth() < birth.getMonth() || (now.getMonth() == birth.getMonth() && now.getDate() < birth.getDate())){
+            age--;
+        }
+        return age;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        document.getElementById('certDate').value = formattedDate;
+        document.getElementById('previewDate').textContent = formattedDate;
+        document.getElementById('cardNo').value = generateUnique9Digit();
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            document.getElementById('notificationText').textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 2000);
         }
 
-        // 计算年龄
-        function getAge(birthYear, birthMonth, birthDay){
-            let now = new Date();
-            let birth = new Date(birthYear, birthMonth-1, birthDay);
-            let age = now.getFullYear() - birth.getFullYear();
-            if(now.getMonth() < birth.getMonth() || (now.getMonth() == birth.getMonth() && now.getDate() < birth.getDate())){
-                age--;
-            }
-            return age;
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0];
-            document.getElementById('certDate').value = formattedDate;
-            document.getElementById('previewDate').textContent = formattedDate;
+        document.getElementById('randomBtn').addEventListener('click', () => {
             document.getElementById('cardNo').value = generateUnique9Digit();
+            updatePreview();
+            showNotification('编号已重新生成');
+        });
 
-            function showNotification(message) {
-                const notification = document.getElementById('notification');
-                document.getElementById('notificationText').textContent = message;
-                notification.classList.add('show');
-                setTimeout(() => notification.classList.remove('show'), 2000);
-            }
+        const photoUpload = document.getElementById('photoUpload');
+        const photoFile = document.getElementById('photoFile');
+        photoUpload.addEventListener('click', () => photoFile.click());
+        photoFile.addEventListener('change', function(e) {
+            if (!this.files[0]) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                userPhotoData = e.target.result;
+                document.getElementById('previewImage').style.display='block';
+                document.getElementById('previewImage').src = userPhotoData;
+                document.getElementById('previewPhotoImg').src = userPhotoData;
+            };
+            reader.readAsDataURL(this.files[0]);
+        });
 
-            // 随机编号按钮
-            document.getElementById('randomBtn').addEventListener('click', () => {
-                document.getElementById('cardNo').value = generateUnique9Digit();
-                updatePreview();
-                showNotification('编号已重新生成');
-            });
-
-            // 头像上传
-            const photoUpload = document.getElementById('photoUpload');
-            const photoFile = document.getElementById('photoFile');
-            photoUpload.addEventListener('click', () => photoFile.click());
-            photoFile.addEventListener('change', function(e) {
-                if (!this.files[0]) return;
-                const reader = new FileReader();
-                reader.onload = e => {
-                    userPhotoData = e.target.result;
-                    document.getElementById('previewImage').style.display='block';
-                    document.getElementById('previewImage').src = userPhotoData;
-                    document.getElementById('previewPhotoImg').src = userPhotoData;
-                };
-                reader.readAsDataURL(this.files[0]);
-            });
-
-            // 身份证自动识别 年龄+性别
-            document.getElementById('idNumber').addEventListener('input', function() {
-                let val = this.value.trim();
-                if(val.length !== 18) return;
-                // 性别
-                let sexNum = parseInt(val.charAt(16));
-                document.getElementById('gender').value = sexNum % 2 === 1 ? "男" : "女";
-                // 出生年月日
-                let by = val.substr(6,4);
-                let bm = val.substr(10,2);
-                let bd = val.substr(12,2);
-                // 计算年龄
-                document.getElementById('age').value = getAge(by,bm,bd);
-                updatePreview();
-            });
-
-            // 输入框全部联动更新
-            const inputs = ['name','gender','cardNo','age','idNumber','certDate','institution'];
-            inputs.forEach(id => document.getElementById(id).addEventListener('input', updatePreview));
-
-            // 核心联动：机构同步标题、底部发证
-            function updatePreview() {
-                const name = document.getElementById('name').value;
-                const gender = document.getElementById('gender').value;
-                const cardNo = document.getElementById('cardNo').value;
-                const age = document.getElementById('age').value;
-                const idNum = document.getElementById('idNumber').value;
-                const date = document.getElementById('certDate').value;
-                const ins = document.getElementById('institution').value || '垫江县桂阳社区卫生服务中心';
-
-                document.getElementById('previewName').textContent = name || '';
-                document.getElementById('previewGender').textContent = gender;
-                document.getElementById('previewCardNo').textContent = cardNo || '';
-                document.getElementById('previewAge').textContent = age || '';
-                document.getElementById('previewIdNumber').textContent = idNum || '';
-                document.getElementById('previewDate').textContent = date;
-
-                // 机构前三个字自动同步证件标题
-                const prefix = ins.substring(0,3);
-                document.getElementById('cardTitle').textContent = prefix + '从业人员健康合格证明';
-
-                // 同步底部发证机构
-                document.getElementById('previewIssuer').textContent = `发证机构：${ins}`;
-                document.getElementById('previewIssuer2').textContent = ins;
-            }
-
-            document.getElementById('generateBtn').addEventListener('click', () => {
-                updatePreview();
-                showNotification('健康证明生成成功！');
-            });
-
+        document.getElementById('idNumber').addEventListener('input', function() {
+            let val = this.value.trim();
+            if(val.length !== 18) return;
+            let sexNum = parseInt(val.charAt(16));
+            document.getElementById('gender').value = sexNum % 2 === 1 ? "男" : "女";
+            let by = val.substr(6,4);
+            let bm = val.substr(10,2);
+            let bd = val.substr(12,2);
+            document.getElementById('age').value = getAge(by,bm,bd);
             updatePreview();
         });
-    </script>
+
+        const inputs = ['name','gender','cardNo','age','idNumber','certDate','institution'];
+        inputs.forEach(id => document.getElementById(id).addEventListener('input', updatePreview));
+
+        function updatePreview() {
+            const name = document.getElementById('name').value;
+            const gender = document.getElementById('gender').value;
+            const cardNo = document.getElementById('cardNo').value;
+            const age = document.getElementById('age').value;
+            const idNum = document.getElementById('idNumber').value;
+            const date = document.getElementById('certDate').value;
+            const ins = document.getElementById('institution').value || '垫江县桂阳社区卫生服务中心';
+
+            document.getElementById('previewName').textContent = name || '';
+            document.getElementById('previewGender').textContent = gender;
+            document.getElementById('previewCardNo').textContent = cardNo || '';
+            document.getElementById('previewAge').textContent = age || '';
+            document.getElementById('previewIdNumber').textContent = idNum || '';
+            document.getElementById('previewDate').textContent = date;
+
+            const prefix = ins.substring(0,3);
+            document.getElementById('cardTitle').textContent = prefix + '从业人员健康合格证明';
+
+            document.getElementById('previewIssuer').textContent = `发证机构：${ins}`;
+            document.getElementById('previewIssuer2').textContent = ins;
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            updatePreview();
+            showNotification('健康证明生成成功！');
+        });
+
+        updatePreview();
+    });
+</script>
 </body>
 </html>
