@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 只加手机适配，不改任何样式与卡片尺寸 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>查询验真</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft YaHei', sans-serif;
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        /* 容器：手机居中，不改变内部卡片原始大小 */
+        .container {
+            max-width: 1300px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin: 20px auto 0;
+        }
+        .form-container, .preview-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin: 20px 0;
+            font-size: 2.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            width: 100%;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        .upload-area {
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin: 10px 0;
+            background: rgba(52, 152, 0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .upload-area:hover {
+            background: rgba52, 152, 219, 0.1;
+        }
+        .upload-area i {
+            font-size: 48px;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        .upload-preview {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+            border: 1px solid #ddd;
+        }
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-random {
+            background: #9b59b6;
+            margin-top: 5px;
+            padding: 10px;
+            font-size: 14px;
+        }
+        /* 手机端只改排列，**卡片原始大小完全不动** */
+        @media (max-width: 960px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .form-container, .preview-container {
+                width: 500px;
+                max-width: 500px;
+            }
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* ========== 以下全部是你原版卡片样式 完全未改动 ========== */
+        .fc { color: rgb(4,4,130); font-weight: bold; font-size: 14px; }
+        .f1 { color: #000; font-weight: bold; font-size: 14px; text-decoration: none; }
+        .dis { display: flex; justify-content: space-between; }
+        .error { color: red; font-weight: bold; }
+        
+        .health-certificate {
+            background: #f8f8f8;
+            margin: 0 auto;
+            width: 414px; /* 原版固定宽度 丝毫未改 */
+        }
+        .cert-card {
+            background: #fff;
+            margin: 0 20px 20px;
+            border: 2px solid #333;
+            border-radius: 14px;
+        }
+        .cert-header {
+            padding: 8px 0;
+            text-align: center;
+            font-size: 16px;
+            border-bottom: 2px solid rgb(48,42,155);
+        }
+        .cert-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 20px;
+        }
+        .cert-info {
+            padding: 10px 0;
+        }
+        .cert-info-row {
+            margin-bottom: 10px;
+        }
+        .stamp-container {
+            position: absolute;
+            left: 50%;
+            bottom: 45px;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .photo-container {
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            z-index: 1;
+        }
+        .cert-footer {
+            width: 100%;
+            height: 2px;
+            background: rgb(48,42,155);
+            margin-bottom: 2px;
+        }
+        .issuer-info {
+            padding: 6px 0;
+            text-align: center;
+            font-size: 13px;
+            border-bottom: 2px solid rgb(48,42,155);
+            color: #fff;
+            background: rgb(41,45,153);
+            border-radius: 0 0 12px 12px;
+        }
+        .explanation-card {
+            background: #fff;
+            margin: 0 20px 20px;
+            border: 2px solid #333;
+            border-radius: 14px;
+        }
+        .explanation-content {
+            padding: 0 20px;
+        }
+        .explanation-section {
+            margin-bottom: 15px;
+        }
+        .explanation-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .logo-qr-container {
+            display: none;
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            padding: 0px;
+            border: 0px solid #ddd;
+            margin-left: -8px;
+            position: relative;
+            top: 6px;
+        }
+        .old-qr-container {
+            display: none;
+        }
+        .photo-preview {
+            width: 60px;
+            height: 80px;
+            border: 1px solid #ddd;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>达达-小京自定义专秒</h1>
+    
+    <div class="container">
+        <div class="form-container">
+            <h2>填写个人信息</h2>
+            <div class="form-group">
+                <label for="name">姓名：</label>
+                <input type="text" id="name" placeholder="请输入姓名" value="">
+            </div>
+            
+            <div class="form-group">
+                <label for="gender">性别：</label>
+                <select id="gender">
+                    <option value="男" selected>男</option>
+                    <option value="女">女</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="cardNo">编号：</label>
+                <input type="text" id="cardNo" placeholder="自动生成9位编号" value="" readonly>
+                <button type="button" id="randomBtn" class="btn btn-random">随机生成9位编号</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">年龄：</label>
+                <input type="number" id="age" placeholder="请输入年龄" min="18" max="70" value="">
+            </div>
+            
+            <div class="form-group">
+                <label for="idNumber">身份证号：</label>
+                <input type="text" id="idNumber" placeholder="请输入身份证号" value="">
+            </div>
+            
+            <div class="form-group">
+                <label for="certDate">体检日期：</label>
+                <input type="date" id="certDate">
+            </div>
+            
+            <div class="form-group">
+                <label for="institution">体检/发证机构：</label>
+                <input type="text" id="institution" placeholder="请输入机构名称" value="垫江县桂阳社区卫生服务中心">
+            </div>
+            
+            <div class="form-group">
+                <label>上传照片：</label>
+                <div class="upload-area" id="photoUpload">
+                    <i>🌟</i>
+                    <p>点击或拖动照片上传</p>
+                    <input type="file" id="photoFile" accept="image/*" style="display: none;">
+                </div>
+                <img id="previewImage" class="upload-preview">
+            </div>
+            
+            <button id="generateBtn" class="btn">模拟生成</button>
+        </div>
+        
+        <div class="preview-container">
+            <h2>证明预览</h2>
+            <div class="health-certificate" id="certificatePreview">
+                <div class="cert-card">
+                    <div class="cert-header fc" id="cardTitle">重庆从业人员健康合格证明</div>
+                    <div class="cert-content">
+                        <div class="cert-info">
+                            <div class="cert-info-row">
+                                <div class="dis" style="width:220px;">
+                                    <div>
+                                        <span class="fc">类别：</span>
+                                        <span class="f1" id="previewCategory">食品类</span>
+                                    </div>
+                                    <div>
+                                        <span class="fc">性别：</span>
+                                        <span class="f1" id="previewGender">男</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cert-info-row">
+                                <div class="dis" style="width:220px;">
+                                    <div>
+                                        <span class="fc">姓名：</span>
+                                        <span class="f1" id="previewName">张雷</span>
+                                    </div>
+                                    <div>
+                                        <span class="fc">年龄：</span>
+                                        <span class="f1" id="previewAge">21</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cert-info-row">
+                                <div class="dis">
+                                    <div>
+                                        <span class="fc">编号：</span>
+                                        <span class="f1" id="previewCardNo"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex;">
+                            <div class="logo-qr-container"></div>
+                            <div style="display:flex;flex-direction: column;justify-content: space-around;margin-left:2px;">
+                                <div>
+                                    <span class="fc">体检日期：</span>
+                                    <span class="f1" id="previewDate">2025-07-16</span>
+                                </div>
+                                <div>
+                                    <span class="fc">有效期一年</span>
+                                </div>
+                                <div>
+                                    <span class="fc">身份证号：</span>
+                                    <span class="f1" id="previewIdNumber"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stamp-container">
+                            <img id="previewStampImg" src="images/sp.png" style="width:100px;height:auto" alt="公章">
+                        </div>
+                        
+                        <div class="photo-container">
+                            <img id="previewPhotoImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='100' viewBox='0 0 80 100'%3E%3Crect width='80' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' font-size='12' text-anchor='middle' fill='%23999' font-family='Arial, sans-serif'%3E%E7%85%A7%E7%89%87%3C/text%3E%3C/svg%3E" alt="照片" style="width:80px;height:auto">
+                        </div>
+                    </div>
+                    <div class="cert-footer"></div>
+                    <div class="issuer-info" id="previewIssuer">发证机构：垫江县桂阳社区卫生服务中心</div>
+                </div>
+                
+                <div class="explanation-card">
+                    <div class="cert-header fc">健康合格证说明</div>
+                    <div class="explanation-content">
+                        <div class="explanation-section">
+                            <span class="fc">检查依据:</span>
+                            <span style="color:#000;font-size:12px">《中华人民共和国食品安全法》、《公共场所卫生管理条例实施细则》、《生活饮用水卫生监督管理办法》《化妆品卫生监督条例》、《中华人民共和国药品管理法》《消毒管理办法》等</span>
+                        </div>
+                        <div class="explanation-section">
+                            <span class="fc">适用范围:</span>
+                            <span style="color:#000;font-size:12px"> 食品生产经营、公共场所、医药销售、供管水、化妆品生产和消毒产品生产等从业人员。</span>
+                        </div>
+                        <div class="explanation-section">
+                            <div class="explanation-title fc">提示:</div>
+                            <div style="color:#000;font-size:12px"> 1、本证本市范围有效，请随身携带以备监督部门检查</div>
+                            <div style="color:#000;font-size:12px"> 2、再次体检换证请在本证期满前及时办理，过期无效</div>
+                        </div>
+                    </div>
+                    <div class="cert-footer"></div>
+                    <div class="issuer-info" style="display:flex;justify-content: space-between;">
+                        <span></span>
+                        <span style="margin-right:10px;" id="previewIssuer2">垫江县桂阳社区卫生服务中心</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notification" class="notification">
+        <span id="notificationText">操作成功！</span>
+    </div>
+    
+    <script>
+        let userPhotoData = null;
+        let usedCodes = new Set();
+
+        // 9位永不重复编号
+        function generateUnique9Digit() {
+            let code;
+            do {
+                code = Math.floor(100000000 + Math.random() * 900000000).toString();
+            } while (usedCodes.has(code));
+            usedCodes.add(code);
+            return code;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('certDate').value = formattedDate;
+            document.getElementById('previewDate').textContent = formattedDate;
+
+            // 页面自动生成编号
+            document.getElementById('cardNo').value = generateUnique9Digit();
+
+            function showNotification(message) {
+                const notification = document.getElementById('notification');
+                document.getElementById('notificationText').textContent = message;
+                notification.classList.add('show');
+                setTimeout(() => notification.classList.remove('show'), 2000);
+            }
+
+            // 随机编号按钮
+            document.getElementById('randomBtn').addEventListener('click', () => {
+                document.getElementById('cardNo').value = generateUnique9Digit();
+                updatePreview();
+                showNotification('编号已重新生成');
+            });
+
+            // 头像上传
+            const photoUpload = document.getElementById('photoUpload');
+            const photoFile = document.getElementById('photoFile');
+            photoUpload.addEventListener('click', () => photoFile.click());
+            photoFile.addEventListener('change', function(e) {
+                if (!this.files[0]) return;
+                const reader = new FileReader();
+                reader.onload = e => {
+                    userPhotoData = e.target.result;
+                    document.getElementById('previewImage').src = userPhotoData;
+                    document.getElementById('previewImage').style.display = 'block';
+                    document.getElementById('previewPhotoImg').src = userPhotoData;
+                };
+                reader.readAsDataURL(this.files[0]);
+            });
+
+            // 身份证自动解析
+            document.getElementById('idNumber').addEventListener('input', function() {
+                const v = this.value.trim();
+                if (v.length !== 18) return;
+                try {
+                    const g = parseInt(v[16]) % 2 ? '男' : '女';
+                    document.getElementById('gender').value = g;
+                    const by = v.substr(6,4), bm = v.substr(10,2), bd = v.substr(12,2);
+                    const birth = new Date(`${by}-${bm}-${bd}`);
+                    let age = today.getFullYear() - birth.getFullYear();
+                    const m = today.getMonth() - birth.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+                    document.getElementById('age').value = age;
+                    updatePreview();
+                } catch (_) {}
+            });
+
+            // 实时预览
+            const inputs = ['name','gender','cardNo','age','idNumber','certDate','institution'];
+            inputs.forEach(id => document.getElementById(id).addEventListener('input', updatePreview));
+
+            function updatePreview() {
+                const name = document.getElementById('name').value;
+                const gender = document.getElementById('gender').value;
+                const cardNo = document.getElementById('cardNo').value;
+                const age = document.getElementById('age').value;
+                const idNum = document.getElementById('idNumber').value;
+                const date = document.getElementById('certDate').value;
+                const ins = document.getElementById('institution').value || '垫江县桂阳社区卫生服务中心';
+
+                document.getElementById('previewName').textContent = name || '';
+                document.getElementById('previewGender').textContent = gender;
+                document.getElementById('previewCardNo').textContent = cardNo || '';
+                document.getElementById('previewAge').textContent = age || '';
+                document.getElementById('previewIdNumber').textContent = idNum || '';
+                document.getElementById('previewDate').textContent = date;
+
+                // 标题去掉市字
+                const prefix = ins.length >= 3 ? ins.substring(0,3) : '重庆';
+                document.getElementById('cardTitle').textContent = prefix + '从业人员健康合格证明';
+
+                document.getElementById('previewIssuer').textContent = `发证机构：${ins}`;
+                document.getElementById('previewIssuer2').textContent = ins;
+            }
+
+            document.getElementById('generateBtn').addEventListener('click', () => {
+                updatePreview();
+                showNotification('健康证明生成成功！');
+            });
+
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
