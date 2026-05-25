@@ -2,23 +2,24 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 只加手机适配，不改任何样式与卡片尺寸 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>查询验真</title>
+    <title>健康证生成</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Microsoft YaHei', sans-serif;
+            font-family: "Microsoft YaHei", sans-serif;
             -webkit-text-size-adjust: 100%;
         }
+
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            min-height: 100vh;
-            padding: 20px;
+            background: #f5f5f5;
+            user-select: none;
+            overflow-x: hidden;
+            padding: 15px;
         }
-        /* 容器：手机居中，不改变内部卡片原始大小 */
+
         .container {
             max-width: 1300px;
             width: 100%;
@@ -28,75 +29,64 @@
             justify-content: center;
             margin: 20px auto 0;
         }
+
         .form-container, .preview-container {
             flex: 1;
             min-width: 300px;
             max-width: 500px;
-            background: rgba(255, 255, 255, 0.92);
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
         }
-        h1 {
-            text-align: center;
-            color: white;
-            margin: 20px 0;
-            font-size: 2.5rem;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            width: 100%;
-        }
+
         h2 {
-            color: #2c3e50;
+            color: #333;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
+            border-bottom: 1px solid #eee;
+            font-size: 18px;
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 8px;
-            color: #2c3e50;
+            color: #333;
             font-weight: bold;
         }
+
         input, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 16px;
-            transition: all 0.3s;
+            background: #fff;
         }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-        }
+
         .upload-area {
-            border: 2px dashed #3498db;
+            border: 1px dashed #ccc;
             border-radius: 10px;
             padding: 20px;
             text-align: center;
             cursor: pointer;
             margin: 10px 0;
-            background: rgba(52, 152, 0.05);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            background: #fafafa;
         }
-        .upload-area:hover {
-            background: rgba52, 152, 219, 0.1;
-        }
+
         .upload-area i {
             font-size: 48px;
-            color: #3498db;
+            color: #666;
             margin-bottom: 10px;
         }
+
         .upload-preview {
             max-width: 100%;
             max-height: 150px;
@@ -105,9 +95,10 @@
             display: none;
             border: 1px solid #ddd;
         }
+
         .btn {
-            background: #3498db;
-            color: white;
+            background: #333;
+            color: #fff;
             border: none;
             padding: 14px 20px;
             border-radius: 8px;
@@ -122,18 +113,19 @@
             justify-content: center;
             gap: 10px;
         }
+
         .btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: #444;
         }
+
         .btn-random {
-            background: #9b59b6;
+            background: #666;
             margin-top: 5px;
             padding: 10px;
             font-size: 14px;
         }
-        /* 手机端只改排列，**卡片原始大小完全不动** */
+
+        /* 手机端只排列不变卡片大小 */
         @media (max-width: 960px) {
             .container {
                 flex-direction: column;
@@ -144,15 +136,16 @@
                 max-width: 500px;
             }
         }
+
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #27ae60;
-            color: white;
+            background: #333;
+            color: #fff;
             padding: 15px 25px;
             border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0.1);
             transform: translateX(150%);
             transition: transform 0.5s ease;
             z-index: 1000;
@@ -164,16 +157,16 @@
             transform: translateX(0);
         }
 
-        /* ========== 以下全部是你原版卡片样式 完全未改动 ========== */
-        .fc { color: rgb(4,4,130); font-weight: bold; font-size: 14px; }
-        .f1 { color: #000; font-weight: bold; font-size: 14px; text-decoration: none; }
+        /* 原版卡片尺寸 完全没改动 */
+        .fc { color: #222; font-weight: bold; font-size: 14px; }
+        .f1 { color: #222; font-weight: bold; font-size: 14px; text-decoration: none; }
         .dis { display: flex; justify-content: space-between; }
-        .error { color: red; font-weight: bold; }
+        .error { color: #333; font-weight: bold; }
         
         .health-certificate {
-            background: #f8f8f8;
+            background: #fff;
+            width: 414px;
             margin: 0 auto;
-            width: 414px; /* 原版固定宽度 丝毫未改 */
         }
         .cert-card {
             background: #fff;
@@ -185,7 +178,8 @@
             padding: 8px 0;
             text-align: center;
             font-size: 16px;
-            border-bottom: 2px solid rgb(48,42,155);
+            border-bottom: 2px solid #333;
+            color: #222;
         }
         .cert-content {
             position: relative;
@@ -214,17 +208,17 @@
         .cert-footer {
             width: 100%;
             height: 2px;
-            background: rgb(48,42,155);
+            background: #333;
             margin-bottom: 2px;
         }
         .issuer-info {
             padding: 6px 0;
             text-align: center;
             font-size: 13px;
-            border-bottom: 2px solid rgb(48,42,155);
-            color: #fff;
-            background: rgb(41,45,153);
-            border-radius: 0 0 12px 12px;
+            border-bottom: 2px solid #333;
+            color: #222;
+            background: #fff;
+            border-radius: 0 0 12px;
         }
         .explanation-card {
             background: #fff;
@@ -264,9 +258,7 @@
         }
     </style>
 </head>
-<body>
-    <h1>达达-小京自定义专秒</h1>
-    
+<body oncontextmenu="return false;">
     <div class="container">
         <div class="form-container">
             <h2>填写个人信息</h2>
@@ -380,11 +372,11 @@
                         </div>
                         
                         <div class="stamp-container">
-                            <img id="previewStampImg" src="sp.png" style="width:100px;height:auto" alt="公章">
+                            <img id="previewStampImg" src="" style="width:100px;height:auto" alt="公章">
                         </div>
                         
                         <div class="photo-container">
-                            <img id="previewPhotoImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='100' viewBox='0 0 80 100'%3E%3Crect width='80' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' font-size='12' text-anchor='middle' fill='%23999' font-family='Arial, sans-serif'%3E%E7%85%A7%E7%89%87%3C/text%3E%3C/svg%3E" alt="照片" style="width:80px;height:auto">
+                            <img id="previewPhotoImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='100' viewBox='0 0 80 100'%3E%3Crect width='80' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' font-size='12' text-anchor='middle' fill='%23999' font-family='Arial, sans-serif'%3E照片%3C/text%3E%3C/svg%3E" style="width:80px;height:auto">
                         </div>
                     </div>
                     <div class="cert-footer"></div>
@@ -396,16 +388,16 @@
                     <div class="explanation-content">
                         <div class="explanation-section">
                             <span class="fc">检查依据:</span>
-                            <span style="color:#000;font-size:12px">《中华人民共和国食品安全法》、《公共场所卫生管理条例实施细则》、《生活饮用水卫生监督管理办法》《化妆品卫生监督条例》、《中华人民共和国药品管理法》《消毒管理办法》等</span>
+                            <span style="color:#222;font-size:12px">《中华人民共和国食品安全法》、《公共场所卫生管理条例实施细则》、《生活饮用水卫生监督管理办法》《化妆品卫生监督条例》、《中华人民共和国药品管理法》《消毒管理办法》等</span>
                         </div>
                         <div class="explanation-section">
                             <span class="fc">适用范围:</span>
-                            <span style="color:#000;font-size:12px"> 食品生产经营、公共场所、医药销售、供管水、化妆品生产和消毒产品生产等从业人员。</span>
+                            <span style="color:#222;font-size:12px"> 食品生产经营、公共场所、医药销售、供管水、化妆品生产和消毒产品生产等从业人员。</span>
                         </div>
                         <div class="explanation-section">
                             <div class="explanation-title fc">提示:</div>
-                            <div style="color:#000;font-size:12px"> 1、本证本市范围有效，请随身携带以备监督部门检查</div>
-                            <div style="color:#000;font-size:12px"> 2、再次体检换证请在本证期满前及时办理，过期无效</div>
+                            <div style="color:#222;font-size:12px"> 1、本证本市范围有效，请随身携带以备监督部门检查</div>
+                            <div style="color:#222;font-size:12px"> 2、再次体检换证请在本证期满前及时办理，过期无效</div>
                         </div>
                     </div>
                     <div class="cert-footer"></div>
@@ -423,10 +415,18 @@
     </div>
     
     <script>
+        // 禁用F12、Ctrl+U、复制查看源码
+        document.addEventListener('keydown',function(e){
+            if(e.key=='F12'||(e.ctrlKey&&e.key.toLowerCase()=='u')||(e.ctrlKey&&e.shiftKey)){
+                e.preventDefault();
+                return false;
+            }
+        });
+        document.addEventListener('selectstart',e=>e.preventDefault());
+
         let userPhotoData = null;
         let usedCodes = new Set();
 
-        // 9位永不重复编号
         function generateUnique9Digit() {
             let code;
             do {
@@ -441,8 +441,6 @@
             const formattedDate = today.toISOString().split('T')[0];
             document.getElementById('certDate').value = formattedDate;
             document.getElementById('previewDate').textContent = formattedDate;
-
-            // 页面自动生成编号
             document.getElementById('cardNo').value = generateUnique9Digit();
 
             function showNotification(message) {
@@ -452,7 +450,6 @@
                 setTimeout(() => notification.classList.remove('show'), 2000);
             }
 
-            // 随机编号按钮
             document.getElementById('randomBtn').addEventListener('click', () => {
                 document.getElementById('cardNo').value = generateUnique9Digit();
                 updatePreview();
@@ -468,14 +465,14 @@
                 const reader = new FileReader();
                 reader.onload = e => {
                     userPhotoData = e.target.result;
+                    document.getElementById('previewImage').style.display='block';
                     document.getElementById('previewImage').src = userPhotoData;
-                    document.getElementById('previewImage').style.display = 'block';
                     document.getElementById('previewPhotoImg').src = userPhotoData;
                 };
                 reader.readAsDataURL(this.files[0]);
             });
 
-            // 身份证自动解析
+            // 身份证解析
             document.getElementById('idNumber').addEventListener('input', function() {
                 const v = this.value.trim();
                 if (v.length !== 18) return;
@@ -492,7 +489,6 @@
                 } catch (_) {}
             });
 
-            // 实时预览
             const inputs = ['name','gender','cardNo','age','idNumber','certDate','institution'];
             inputs.forEach(id => document.getElementById(id).addEventListener('input', updatePreview));
 
@@ -512,7 +508,6 @@
                 document.getElementById('previewIdNumber').textContent = idNum || '';
                 document.getElementById('previewDate').textContent = date;
 
-                // 标题去掉市字
                 const prefix = ins.length >= 3 ? ins.substring(0,3) : '重庆';
                 document.getElementById('cardTitle').textContent = prefix + '从业人员健康合格证明';
 
