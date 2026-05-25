@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>健康证生成</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>健康证明</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,14 +12,12 @@
             font-family: "Microsoft YaHei", sans-serif;
             -webkit-text-size-adjust: 100%;
         }
-
         body {
             background: #f5f5f5;
             user-select: none;
             overflow-x: hidden;
             padding: 15px 0;
         }
-
         .container {
             max-width: 1300px;
             width: 100%;
@@ -29,7 +27,6 @@
             justify-content: center;
             margin: 0 auto;
         }
-
         .form-container, .preview-container {
             width: 500px;
             max-width: 500px;
@@ -39,7 +36,6 @@
             padding: 25px;
             box-shadow: 0 2px 8px rgba(0,0,0.05);
         }
-
         h2 {
             color: #333;
             margin-bottom: 20px;
@@ -47,18 +43,15 @@
             border-bottom: 1px solid #eee;
             font-size: 18px;
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         label {
             display: block;
             margin-bottom: 8px;
             color: #333;
             font-weight: bold;
         }
-
         input, select {
             width: 100%;
             padding: 12px;
@@ -67,7 +60,6 @@
             font-size: 16px;
             background: #fff;
         }
-
         .upload-area {
             border: 1px dashed #ccc;
             border-radius: 10px;
@@ -77,13 +69,11 @@
             margin: 10px 0;
             background: #fafafa;
         }
-
         .upload-area i {
             font-size: 48px;
             color: #666;
             margin-bottom: 10px;
         }
-
         .upload-preview {
             max-width: 100%;
             max-height: 150px;
@@ -92,7 +82,6 @@
             display: none;
             border: 1px solid #ddd;
         }
-
         .btn {
             background: #333;
             color: #fff;
@@ -106,14 +95,12 @@
             transition: all 0.3s;
             margin-top: 10px;
         }
-
         .btn-random {
             background: #666;
             margin-top: 5px;
             padding: 10px;
             font-size: 14px;
         }
-
         .notification {
             position: fixed;
             top: 20px;
@@ -131,13 +118,13 @@
             transform: translateX(0);
         }
 
-        /* 还原原版完整四边边框，右边线条恢复 */
+        /* 两张卡片固定统一414px原版尺寸，不缩小不变形 */
         .health-certificate {
             width: 414px;
             margin: 0 auto;
             background: #fff;
         }
-        .cert-card {
+        .cert-card, .explanation-card {
             width: 414px;
             background: #fff;
             margin: 0 20px 20px;
@@ -190,13 +177,6 @@
             background: #fff;
             border-radius: 0 0 12px;
         }
-        .explanation-card {
-            width: 414px;
-            background: #fff;
-            margin: 0 20px 20px;
-            border: 2px solid #333;
-            border-radius: 14px;
-        }
         .explanation-content {
             padding: 0 20px;
         }
@@ -215,8 +195,9 @@
         .dis { display: flex; justify-content: space-between; }
         .error { color: #333; font-weight: bold; }
 
-        /* 手机自适应：只排版变，卡片边框、大小完全不动 */
-        @media (max-width: 1040px) {            .container {
+        /* 手机大屏上下排列，卡片尺寸完全不变 */
+        @media (max-width: 1040px) {
+            .container {
                 flex-direction: column;
                 align-items: center;
                 gap: 20px;
@@ -252,7 +233,7 @@
             
             <div class="form-group">
                 <label for="age">年龄：</label>
-                <input type="number" placeholder="请输入年龄" min="18" max="70" value="">
+                <input type="number" id="age" placeholder="请输入年龄" min="18" max="70" value="">
             </div>
             
             <div class="form-group">
@@ -284,8 +265,8 @@
         </div>
         
         <div class="preview-container">
-            <h2>电子证明查询</h2>
-            <div class="health-certificate" id="certificatePreview">
+            <h2>证明预览</h2>
+            <div class="health-certificate">
                 <div class="cert-card">
                     <div class="cert-header fc" id="cardTitle">重庆从业人员健康合格证明</div>
                     <div class="cert-content">
@@ -385,6 +366,7 @@
     
     <script>
         // 禁用F12、Ctrl+U、复制查看源码
+        document.addEventListener('contextmenu',e=>e.preventDefault());
         document.addEventListener('keydown',function(e){
             if(e.key=='F12'||(e.ctrlKey&&e.key.toLowerCase()=='u')||(e.ctrlKey&&e.shiftKey)){
                 e.preventDefault();
@@ -396,6 +378,7 @@
         let userPhotoData = null;
         let usedCodes = new Set();
 
+        // 9位不重复编号
         function generateUnique9Digit() {
             let code;
             do {
@@ -403,6 +386,17 @@
             } while (usedCodes.has(code));
             usedCodes.add(code);
             return code;
+        }
+
+        // 计算年龄
+        function getAge(birthYear, birthMonth, birthDay){
+            let now = new Date();
+            let birth = new Date(birthYear, birthMonth-1, birthDay);
+            let age = now.getFullYear() - birth.getFullYear();
+            if(now.getMonth() < birth.getMonth() || (now.getMonth() == birth.getMonth() && now.getDate() < birth.getDate())){
+                age--;
+            }
+            return age;
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -419,6 +413,7 @@
                 setTimeout(() => notification.classList.remove('show'), 2000);
             }
 
+            // 随机编号按钮
             document.getElementById('randomBtn').addEventListener('click', () => {
                 document.getElementById('cardNo').value = generateUnique9Digit();
                 updatePreview();
@@ -435,31 +430,33 @@
                 reader.onload = e => {
                     userPhotoData = e.target.result;
                     document.getElementById('previewImage').style.display='block';
+                    document.getElementById('previewImage').src = userPhotoData;
                     document.getElementById('previewPhotoImg').src = userPhotoData;
                 };
                 reader.readAsDataURL(this.files[0]);
             });
 
-            // 身份证解析
+            // 身份证自动识别 年龄+性别
             document.getElementById('idNumber').addEventListener('input', function() {
-                const v = this.value.trim();
-                if (v.length !== 18) return;
-                try {
-                    const g = parseInt(v[16]) % 2 ? '男' : '女';
-                    document.getElementById('gender').value = g;
-                    const by = v.substr(6,4), bm = v.substr(10,2), bd = v.substr(12,2);
-                    const birth = new Date(`${by}-${bm}-${bd}`);
-                    let age = today.getFullYear() - birth.getFullYear();
-                    const m = today.getMonth() - birth.getMonth();
-                    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-                    document.getElementById('age').value = age;
-                    updatePreview();
-                } catch (_) {}
+                let val = this.value.trim();
+                if(val.length !== 18) return;
+                // 性别
+                let sexNum = parseInt(val.charAt(16));
+                document.getElementById('gender').value = sexNum % 2 === 1 ? "男" : "女";
+                // 出生年月日
+                let by = val.substr(6,4);
+                let bm = val.substr(10,2);
+                let bd = val.substr(12,2);
+                // 计算年龄
+                document.getElementById('age').value = getAge(by,bm,bd);
+                updatePreview();
             });
 
+            // 输入框全部联动更新
             const inputs = ['name','gender','cardNo','age','idNumber','certDate','institution'];
             inputs.forEach(id => document.getElementById(id).addEventListener('input', updatePreview));
 
+            // 核心联动：机构同步标题、底部发证
             function updatePreview() {
                 const name = document.getElementById('name').value;
                 const gender = document.getElementById('gender').value;
@@ -476,9 +473,11 @@
                 document.getElementById('previewIdNumber').textContent = idNum || '';
                 document.getElementById('previewDate').textContent = date;
 
-                const prefix = ins.length >= 3 ? ins.substring(0,3) : '重庆';
+                // 机构前三个字自动同步证件标题
+                const prefix = ins.substring(0,3);
                 document.getElementById('cardTitle').textContent = prefix + '从业人员健康合格证明';
 
+                // 同步底部发证机构
                 document.getElementById('previewIssuer').textContent = `发证机构：${ins}`;
                 document.getElementById('previewIssuer2').textContent = ins;
             }
