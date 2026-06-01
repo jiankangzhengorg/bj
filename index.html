@@ -326,7 +326,7 @@
       text-align: center;
       padding: 2.5rem;
       margin-top: 5rem;
-      border-top: 1px solid var(--border);
+      border-top: 1px var(--border);
       color: var(--text-secondary);
       font-size: 0.9rem;
       letter-spacing: 1px;
@@ -442,18 +442,43 @@
   <script>
     // ========== 密码设置区（在这里修改你的访问密码） ==========
     const CORRECT_PWD = "123456"; // 自行修改为你的密码
+    const LOGIN_VALID_HOURS = 12; // 有效时长：12小时
     // =======================================================
 
-    // 密码验证逻辑
+    // DOM元素
     const pwdWrap = document.getElementById('pwdWrap');
     const mainContent = document.getElementById('mainContent');
     const pwdInput = document.getElementById('pwdInput');
     const pwdBtn = document.getElementById('pwdBtn');
     const tipText = document.getElementById('tipText');
 
+    // 自动登录验证：检查本地存储的登录时效
+    function autoLoginCheck() {
+      const loginTime = localStorage.getItem('shuke_login_time');
+      const savedPwd = localStorage.getItem('shuke_login_pwd');
+      if (!loginTime || !savedPwd) return false;
+
+      const now = Date.now();
+      const expire = loginTime * 1 + LOGIN_VALID_HOURS * 60 * 60 * 1000;
+      if (now < expire && savedPwd === CORRECT_PWD) {
+        pwdWrap.style.display = "none";
+        mainContent.style.display = "block";
+        return true;
+      }
+      return false;
+    }
+
+    // 页面加载时自动验证
+    const logined = autoLoginCheck();
+
+    // 密码验证
     function checkPwd() {
       let inputVal = pwdInput.value.trim();
       if (inputVal === CORRECT_PWD) {
+        // 保存登录状态 12小时
+        localStorage.setItem('shuke_login_time', Date.now());
+        localStorage.setItem('shuke_login_pwd', CORRECT_PWD);
+        
         pwdWrap.style.display = "none";
         mainContent.style.display = "block";
       } else {
@@ -462,10 +487,12 @@
       }
     }
 
-    pwdBtn.addEventListener('click', checkPwd);
-    pwdInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') checkPwd();
-    });
+    if (!logined) {
+      pwdBtn.addEventListener('click', checkPwd);
+      pwdInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPwd();
+      });
+    }
 
     // 主题切换逻辑，默认暗色模式
     const themeBtn = document.getElementById('themeBtn');
