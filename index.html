@@ -1,214 +1,509 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShuKeYun养猪-母猪产后护理</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: "Microsoft YaHei", sans-serif;
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.8;
-            padding: 15px;
-            position: relative;
-        }
-        /* 左上角隐秘勾选框 */
-        .hidden-checkbox {
-            position: fixed;
-            top: 5px;
-            left: 5px;
-            width: 12px;
-            height: 12px;
-            opacity: 0.1; /* 极低透明度，非常隐蔽 */
-            cursor: pointer;
-            z-index: 999;
-        }
-        /* 右上角新增隐藏勾选框 */
-        .hidden-checkbox-right {
-            position: fixed;
-            top: 5px;
-            right: 5px;
-            width: 12px;
-            height: 12px;
-            opacity: 0.1;
-            cursor: pointer;
-            z-index: 999;
-        }
-        /* 顶部刷新按钮样式 */
-        .refresh-bar {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        #refreshBtn {
-            padding: 10px 25px;
-            background: #1f572f;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #refreshBtn:active {
-            background: #143d21;
-        }
-        .box {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 8px #ddd;
-        }
-        h1 {
-            text-align: center;
-            color: #1f572f;
-            margin-bottom: 25px;
-            font-size: 26px;
-        }
-        h2 {
-            font-size: 20px;
-            color: #1f572f;
-            margin: 20px 0 10px;
-            border-left: 5px solid #2b7042;
-            padding-left: 12px;
-        }
-        p {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        /* 底部友情链接 */
-        .footer-link {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            text-align: center;
-        }
-        .footer-link a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .footer-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShuKeYun3.0</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Microsoft Yahei", "Segoe UI", monospace;
+      transition: all 0.3s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    :root {
+      --bg-main: #12141a;
+      --bg-card: #1c1f29;
+      --bg-hover: #252936;
+      --accent: #2d8cf0;
+      --accent-light: #409eff;
+      --text-primary: #e6e6e6;
+      --text-secondary: #a0a8b8;
+      --border: #2e3342;
+      --border-light: #3a4052;
+
+      /* 亮色模式备用 */
+      --bg-light: #f2f3f5;
+      --card-light: #ffffff;
+      --text-light: #1d1d1f;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      min-height: 100vh;
+      background-image: radial-gradient(rgba(45, 140, 240, 0.04) 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow-x: hidden;
+    }
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-light);
+      background-image: none;
+    }
+
+    /* 密码弹窗样式 */
+    .password-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .password-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2.5rem 2rem;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+    }
+    .password-box h2 {
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+      font-size: 1.4rem;
+    }
+    .password-box input {
+      width: 100%;
+      padding: 1rem;
+      background: #252936;
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 1rem;
+    }
+    .password-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(45, 140, 240, 0.2);
+    }
+    .password-box button {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+    .password-box button:hover {
+      background: var(--accent-light);
+    }
+    .tip-text {
+      color: #ff6b6b;
+      font-size: 0.85rem;
+      height: 20px;
+      margin: 0.5rem 0;
+    }
+    .main-content {
+      display: none;
+    }
+
+    /* 导航栏 */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(28, 31, 41, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+    }
+    body.light .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: #ddd;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+    .logo i {
+      font-size: 2rem;
+      filter: drop-shadow(0 0 6px rgba(45, 140, 240, 0.4));
+    }
+
+    .nav-tools {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+    .theme-toggle {
+      width: 44px;
+      height: 44px;
+      border-radius: 4px;
+      border: 1px solid var(--border-light);
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    body.light .theme-toggle {
+      color: var(--text-light);
+      border-color: #ccc;
+    }
+    .theme-toggle:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* 主体容器 */
+    .container {
+      max-width: 1400px;
+      margin: 120px auto 60px;
+      padding: 0 5%;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 4rem;
+      padding-top: 2rem;
+    }
+    .page-header h1 {
+      font-size: 2.6rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      letter-spacing: 4px;
+      text-shadow: 0 0 10px rgba(45, 140, 240, 0.3);
+    }
+    .page-header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 750px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    body.light .page-header p {
+      color: #666;
+    }
+
+    /* 分类标题 */
+    .category {
+      margin: 3.5rem 0 1.8rem;
+      font-size: 1.4rem;
+      padding-left: 12px;
+      border-left: 3px solid var(--accent);
+      color: var(--text-primary);
+      letter-spacing: 1px;
+    }
+    body.light .category {
+      color: var(--text-light);
+    }
+
+    /* 卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    /* 通用卡片样式 */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+    }
+    body.light .card {
+      background: var(--card-light);
+      border-color: #ddd;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      background: var(--bg-hover);
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(45, 140, 240, 0.12);
+    }
+    body.light .card:hover {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+    .card:hover .card-img {
+      opacity: 1;
+    }
+
+    .card-body {
+      padding: 1.4rem;
+    }
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      color: var(--accent-light);
+      letter-spacing: 1px;
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    body.light .card-desc {
+      color: #666;
+    }
+
+    /* 购买资格按钮样式 */
+    .buy-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 6px 14px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .buy-btn:hover {
+      background: var(--accent-light);
+    }
+
+    /* 下载卡片样式 */
+    .download-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2.5rem 1rem;
+      gap: 1.2rem;
+      height: 100%;
+    }
+    .download-icon {
+      font-size: 3.2rem;
+      color: var(--accent);
+      filter: drop-shadow(0 0 8px rgba(45, 140, 240, 0.25));
+    }
+    .android .download-icon {
+      color: #3ddc84;
+      filter: drop-shadow(0 0 8px rgba(61, 220, 132, 0.25));
+    }
+    .ios .download-icon {
+      color: #f0f0f0;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+    }
+
+    /* 页脚 */
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      margin-top: 5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    body.light footer {
+      border-color: #ddd;
+      color: #777;
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .page-header h1 {
+        font-size: 2rem;
+      }
+      .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      }
+      .container {
+        margin-top: 100px;
+      }
+      .logo {
+        font-size: 1.5rem;
+      }
+      .password-box {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
-
-<!-- 左上角隐秘勾选框（原有） -->
-<input type="checkbox" class="hidden-checkbox" id="secretBtn">
-
-<!-- 右上角新增隐藏勾选框 -->
-<input type="checkbox" class="hidden-checkbox-right" id="secretBtnRight">
-
-<!-- 顶部刷新按钮 -->
-<div class="refresh-bar">
-    <button id="refreshBtn">🔄 刷新同步</button>
-</div>
-
-<div class="box">
-    <h1>母猪产后护理完整教程</h1>
-
-    <h2>一、产后圈舍环境管理</h2>
-    <p>保持产房干燥、通风、保温，温度控制在20～25℃，杜绝贼风直吹母猪。及时清理粪便污物，定期喷雾消毒，降低子宫炎、乳房炎发病率。</p>
-
-    <h2>二、产后饲喂与饮水</h2>
-    <p>产后当天少喂料，以温水、麸皮汤为主；第二天开始逐步加量，饲喂高蛋白哺乳料。全天保持充足干净饮水，防止母猪产后便秘、无乳少乳。</p>
-
-    <h2>三、子宫与恶露护理</h2>
-    <p>正常母猪恶露3～5天排净，颜色由红变淡黄。若恶露发臭、淋漓不尽、体温升高，及时消炎清宫，预防产后感染。</p>
-
-    <h2>四、乳房护理要点</h2>
-    <p>每日观察乳房有无红肿、硬块、发热，发现乳房炎及时热敷、按摩、打针消炎。固定仔猪乳头，避免咬伤、抢奶导致乳房损伤。</p>
-
-    <h2>五、产后常见病症处理</h2>
-    <p>产后无乳：补充营养、催乳调理；</p>
-    <p>产后便秘：青绿饲料+益生菌+充足饮水；</p>
-    <p>产后瘫痪：及时补钙补磷、静养护理；</p>
-    <p>产后不食：健胃消炎、调理肠胃。</p>
-
-    <h2>六、母仔同步管理</h2>
-    <p>做好防压栏设置，避免压死仔猪；保证仔猪及时吃初乳，提高成活率。观察母猪母性，咬人、压仔及时人工看护干预。</p>
-
-    <!-- 友情链接 可改网址和文字 -->
-    <div class="footer-link">
-        友情链接：<a href=" " target="_blank">入口已关闭-专款已打-退费联系管理员</a>
+  <!-- 密码验证弹窗 -->
+  <div class="password-wrap" id="pwdWrap">
+    <div class="password-box">
+      <h2>SecurityVerification</h2>
+      <input type="password" id="pwdInput" placeholder="PassWord">
+      <div class="tip-text" id="tipText"></div>
+      <button id="pwdBtn">Ok</button>
     </div>
-</div>
+  </div>
 
-<script>
-    // 刷新按钮功能
-    document.getElementById('refreshBtn').addEventListener('click', function() {
-        location.reload();
+  <!-- 主内容区域（密码正确后显示） -->
+  <div class="main-content" id="mainContent">
+    <nav class="navbar">
+      <a href="#" class="logo">
+        <i class="fas fa-cloud"></i>
+        <span>ShuKeYun</span>
+      </a>
+      <div class="nav-tools">
+        <button class="theme-toggle" id="themeBtn">
+          <i class="fas fa-sun"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="page-header">
+        <h1>ShuKeYun3.0</h1>
+        <p>接单发单综合服务平台 | 高效稳定，安全合规，点击卡片快速进入对应服务入口</p>
+      </div>
+
+      <h2 class="category">核心服务</h2>
+      <div class="card-grid">
+        <!-- 第一张卡片：云接单平台 + 购买资格链接 -->
+        <a href="https://www.example.com" target="_blank" class="card">
+          <img src="未标题-1.png" class="card-img" alt="云接单">
+          <div class="card-body">
+            <h3 class="card-title">ShuKe云接单平台</h3>
+            <p class="card-desc">接发单、流量池、自动结算，全程高效运转</p>
+            <!-- 购买资格按钮 👇 在这里替换链接 -->
+            <a href="https://你的云接单购买资格链接" target="_blank" class="buy-btn">购买资格</a>
+          </div>
+        </a>
+
+        <!-- 第二张卡片：云卡密 + 购买资格链接 -->
+        <a href="https://www.example.com" target="_blank" class="card">
+          <img src="yunka-1.png" class="card-img" alt="云卡密">
+          <div class="card-body">
+            <h3 class="card-title">Shuke云卡密</h3>
+            <p class="card-desc">实体卡密实时更新，诚信经营，稳定可靠</p>
+            <!-- 购买资格按钮 👇 在这里替换链接 -->
+            <a href="https://你的云卡密购买资格链接" target="_blank" class="buy-btn">购买资格</a>
+          </div>
+        </a>
+      </div>
+
+      <h2 class="category">客户端下载</h2>
+      <div class="card-grid">
+        <!-- 替换 href 为你的安卓下载链接 -->
+        <a href="这里填写安卓下载链接" target="_blank" class="card android download-card">
+          <i class="fab fa-android download-icon"></i>
+          <div class="card-body text-center">
+            <h3 class="card-title">Android 客户端</h3>
+            <p class="card-desc">全版本安卓设备适配，运行稳定</p>
+          </div>
+        </a>
+        <!-- 替换 href 为你的 iOS 下载链接 -->
+        <a href="这里填写iOS下载链接" target="_blank" class="card ios download-card">
+          <i class="fab fa-apple download-icon"></i>
+          <div class="card-body text-center">
+            <h3 class="card-title">iOS 客户端</h3>
+            <p class="card-desc">iPhone / iPad 专属版本，官方适配</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2026 ShuKeYun 云担保服务平台 版权所有</p>
+    </footer>
+  </div>
+
+  <script>
+    // ========== 密码设置区（在这里修改你的访问密码） ==========
+    const CORRECT_PWD = "123456"; // 自行修改为你的密码
+    // =======================================================
+
+    // 密码验证逻辑
+    const pwdWrap = document.getElementById('pwdWrap');
+    const mainContent = document.getElementById('mainContent');
+    const pwdInput = document.getElementById('pwdInput');
+    const pwdBtn = document.getElementById('pwdBtn');
+    const tipText = document.getElementById('tipText');
+
+    function checkPwd() {
+      let inputVal = pwdInput.value.trim();
+      if (inputVal === CORRECT_PWD) {
+        pwdWrap.style.display = "none";
+        mainContent.style.display = "block";
+      } else {
+        tipText.innerText = "密码错误，请重新输入";
+        pwdInput.value = "";
+      }
+    }
+
+    pwdBtn.addEventListener('click', checkPwd);
+    pwdInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPwd();
     });
 
-    // 原有：左上角隐秘勾选框 - 密码验证跳转
-    document.getElementById('secretBtn').addEventListener('click', function(){
-        // ========== 原有配置 ==========
-        const rightPwd = "01674402";
-        const targetUrl = "http://wzunjkxo.cyou";
-        // ================================
-        
-        let userPwd = prompt("请输入访问密码：");
-        if(userPwd === rightPwd){
-            window.open(targetUrl, "_blank");
-        }
-        this.checked = false;
+    // 主题切换逻辑，默认暗色模式
+    const themeBtn = document.getElementById('themeBtn');
+    const body = document.body;
+    const icon = themeBtn.querySelector('i');
+
+    if (localStorage.getItem('shuke-theme') === 'light') {
+      body.classList.add('light');
+      icon.classList.replace('fa-sun', 'fa-moon');
+    } else {
+      body.classList.remove('light');
+      icon.className = 'fas fa-sun';
+    }
+
+    themeBtn.addEventListener('click', () => {
+      body.classList.toggle('light');
+      if (body.classList.contains('light')) {
+        icon.classList.replace('fa-sun', 'fa-moon');
+        localStorage.setItem('shuke-theme', 'light');
+      } else {
+        icon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('shuke-theme', 'dark');
+      }
     });
 
-    // 新增：右上角隐藏勾选框 - 自定义密码+链接
-    document.getElementById('secretBtnRight').addEventListener('click', function(){
-        // ========== 右上角自定义配置 ==========
-        const rightPwdRight = "01674402";      // 你自己的密码
-        const targetUrlRight = "http://gxnimbpicture.tokyo"; // 你自己的超链接
-        // ======================================
-        
-        let userPwd = prompt("请输入访问密码：");
-        if(userPwd === rightPwdRight){
-            window.open(targetUrlRight, "_blank");
-        }
-        this.checked = false;
-    });
-
-    // ========== 页面安全防护：禁止右键+禁止复制+禁止查看源代码 ==========
-    // 禁止右键菜单
-    document.oncontextmenu = function(){
+    // 禁止右键、复制、F12、查看源码
+    document.oncontextmenu = function () { return false; };
+    document.onkeydown = function (e) {
+      let evt = e || window.event;
+      if (evt.keyCode === 123
+        || (evt.ctrlKey && evt.keyCode === 85)
+        || (evt.ctrlKey && evt.keyCode === 83)
+        || (evt.ctrlKey && evt.keyCode === 67)) {
         return false;
+      }
     };
-    // 禁止复制文本
-    document.oncopy = function(){
-        return false;
-    };
-    // 禁止剪切
-    document.oncut = function(){
-        return false;
-    };
-    // 禁止粘贴
-    document.onpaste = function(){
-        return false;
-    };
-    // 禁止F12、Ctrl+U、Ctrl+Shift+I查看源代码
-    document.onkeydown = function(e){
-        // F12
-        if(e.key === 'F12'){
-            return false;
-        }
-        // Ctrl+U 查看源代码
-        if(e.ctrlKey && e.key === 'u'){
-            return false;
-        }
-        // Ctrl+Shift+I 开发者工具
-        if(e.ctrlKey && e.shiftKey && e.key === 'i'){
-            return false;
-        }
-    };
-</script>
-
+    document.ondragstart = function () { return false; };
+  </script>
 </body>
 </html>
 
