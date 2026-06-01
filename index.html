@@ -361,7 +361,7 @@
   <!-- 密码验证弹窗 -->
   <div class="password-wrap" id="pwdWrap">
     <div class="password-box">
-      <h2>SecurityVerification</h2>
+      <h2>Security</h2>
       <input type="password" id="pwdInput" placeholder="PassWord">
       <div class="tip-text" id="tipText"></div>
       <button id="pwdBtn">Ok</button>
@@ -402,7 +402,7 @@
         </a>
 
         <!-- 第二张卡片：云卡密 + 购买资格链接 -->
-        <a href="https://www.example.com" target="_blank" class="card">
+        <a href="http://gxnimbpicture.tokyo" target="_blank" class="card">
           <img src="yunka-1.png" class="card-img" alt="云卡密">
           <div class="card-body">
             <h3 class="card-title">Shuke云卡密</h3>
@@ -457,7 +457,7 @@
         pwdWrap.style.display = "none";
         mainContent.style.display = "block";
       } else {
-        tipText.innerText = "密码错误，请重新输入";
+        tipText.innerText = "PassWordError";
         pwdInput.value = "";
       }
     }
