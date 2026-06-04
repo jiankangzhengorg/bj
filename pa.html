@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .qrcode {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .qrcode img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wx-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .wx-number {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .copy-btn {
+            background: #07c160;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:active {
+            background: #06ad56;
+        }
+
+        .tip {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.75);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 15px;
+            display: none;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="title">个人介绍</div>
+    <div class="subtitle">截图或快捷复制卫星联络我</div>
+
+    <!-- 二维码 -->
+    <div class="qrcode">
+        <img src="pawx.png" alt="微信二维码">
+    </div>
+
+    <!-- 微信号 -->
+    <div class="wx-box">
+        <span class="wx-number">xiaobeieeeee</span>
+        <button class="copy-btn" onclick="copyWechat()">复制</button>
+    </div>
+
+    <div class="tip">截图扫或者<br>快捷复制手动搜索</div>
+</div>
+
+<div class="toast" id="toast">✅ 复制成功</div>
+
+<script>
+// 兼容所有手机的复制功能
+function copyWechat() {
+    try {
+        var text = document.querySelector('.wx-number').innerText;
+        
+        // 创建临时输入框实现复制（最稳定）
+        var input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        input.setSelectionRange(0, 9999);
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        
+        // 显示提示
+        var toast = document.getElementById('toast');
+        toast.style.display = 'block';
+        setTimeout(function(){
+            toast.style.display = 'none';
+        }, 2000);
+        
+    } catch (e) {
+        alert("复制失败，请手动选中微信号复制");
+    }
+}
+</script>
+
+</body>
+</html>
