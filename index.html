@@ -253,7 +253,7 @@ footer {
     <div class="logo">
       ShuKeYun 3.0
       <div class="order-counter">
-        CreativeOrder 订单已突破：<span id="orderNum">0</span> 单
+        CreativeOrder 订单已突破：<span id="orderNum">6</span> 单
         <div class="order-tip">提示数据每 24h 刷新一次</div>
       </div>
     </div>
@@ -296,19 +296,7 @@ footer {
                      values="70;100" dur="1.2s" repeatCount="indefinite"/>
           </circle>
         </svg>
-      </div>
-      <h3>CreativeOrder</h3>
-      <p>订单流转 · 自由接发单·🚫限制低价-资金托管 · 极速结账</p>
-      <a href="  http://0cogoxvd.lol " target="_blank" class="buy">
-        登录
-      </a>
-      <a href=" https://www.jifaka.cn/item/dbr89m " target="_blank" class="buy">
-        注册码
-      </a>
-  <a href="http://154.219.115.16" target="_blank" class="buy">
-        联络
-      </a>
-    </div>
+    
 
     <div class="card">
       <div class="svg">
@@ -340,6 +328,9 @@ footer {
       </a>
       <a href="   https://www.jifaka.cn/shop/E9XC0MOY  " target="_blank" class="buy">
         购买
+      </a>
+       <a href="http://154.219.115.16" target="_blank" class="buy">
+        全员匿名交流
       </a>
     </div>
 
@@ -383,19 +374,26 @@ function animateOrderCount() {
 
 /* ===== 密码 ===== */
 const PWD = "112233";
+// 2小时有效期（毫秒）
+const EXPIRE_TIME = 2 * 60 * 60 * 1000;
+
 function check() {
   const v = pwd.value.trim();
   if (v === PWD) {
     mask.style.display = "none";
     app.style.display = "block";
-    localStorage.setItem("sk", Date.now());
+    // 存储当前时间戳
+    localStorage.setItem("sk_verify_time", Date.now());
     setTimeout(animateOrderCount, 200);
   } else {
     tip.innerText = "访问被拒绝";
   }
 }
+
 window.onload = () => {
-  if (localStorage.getItem("sk")) {
+  const verifyTime = localStorage.getItem("sk_verify_time");
+  // 验证是否在2小时有效期内
+  if (verifyTime && Date.now() - verifyTime < EXPIRE_TIME) {
     mask.style.display = "none";
     app.style.display = "block";
     setTimeout(animateOrderCount, 200);
