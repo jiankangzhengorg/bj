@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<!-- 强化移动端适配：禁止缩放、视口严格匹配设备宽度 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="white">
+<title>广东省食品从业人员健康证明</title>
+<style>
+/* 全局重置，消除浏览器默认边距差异 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* 禁止文本选中 */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* 打印A5标准尺寸 */
+@page {
+    size: A5;
+    margin: 0;
+}
+
+html {
+    /* 基准字号，统一所有设备字体换算 */
+    font-size: 16px;
+}
+
+body {
+    background: #CDC3AF;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+/* A5容器：打印真实尺寸 + 移动端最大宽度限制 */
+.a5 {
+    width: 148mm;
+    min-height: 210mm;
+    padding: 10mm;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5mm; /* 模块统一间距，全局固定 */
+}
+
+/* 通用卡片样式，尺寸固定不随屏幕乱变 */
+.card {
+    width: 95mm;
+    height: 46mm;
+    border-radius: 9px;
+    background: #fff;
+    box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+    padding: 3mm 5mm;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 信息卡片标题 */
+.card.info .title {
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1mm;
+}
+
+/* 信息行统一行高、不换行 */
+.info-row {
+    font-size: 9.5pt;
+    white-space: nowrap;
+    line-height: 1.45;
+}
+.info-row label {
+    display: inline-block;
+    width: 12mm;
+    font-weight: normal;
+}
+.info-row span {
+    font-family: "SimHei", sans-serif;
+    font-weight: bold;
+    margin-left: 2mm;
+}
+
+.id-desc {
+    font-size: 9pt;
+    color: #0d0d0dd4;
+    margin: -0.3mm 0 0.5mm 0;
+    padding-left: 0;
+}
+
+/* 底部说明文字：绝对定位固定位置 */
+.bottom-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.8mm;
+    text-align: center;
+    font-size: 8pt;
+    color: #0a3273;
+    white-space: nowrap;
+}
+
+/* 证件照片 位置完全固定 */
+.photo {
+    position: absolute;
+    right: 4mm;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 13mm;
+    height: 16mm;
+    border: 1px solid #ccc;
+    background: #f6f6f6;
+}
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* 禁止图片拖拽 */
+    pointer-events: none;
+}
+
+/* 顶部大标题卡片 */
+.card.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    min-height: 40mm;
+}
+.main-title {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.42;
+    font-family: "SimHei", serif;
+}
+.main-title span {
+    display: block;
+}
+
+/* 说明提示框 */
+.notice-box {
+    width: 95mm;
+    background: #fffde7;
+    border: 1px solid #ffecb3;
+    border-radius: 5px;
+    padding: 3mm;
+    position: relative;
+    margin-top: 1mm;
+}
+.warn-icon {
+    position: absolute;
+    left: 9mm;
+    top: 3.8mm;
+    width: 3mm;
+    height: 3mm;
+    background: #ffc107;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8pt;
+    color: #fff;
+}
+.notice-text {
+    margin-left: 6mm;
+    font-size: 8pt;
+    line-height: 1.65;
+    color: #c0392b;
+}
+.notice-text .bold {
+    font-family: "SimHei", sans-serif;
+    font-weight: bold;
+    color: #0f0f0f;
+    margin-left: 4mm;
+}
+
+/* 二维码区域 */
+.qr-title {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: -4mm;
+}
+.qr {
+    width: 38mm;
+    height: 38mm;
+    margin: -5mm auto 0;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.qr img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    /* 禁止图片拖拽 */
+    pointer-events: none;
+}
+
+/* ========== 移动端全局适配（核心：统一间距、尺寸、不跑偏） ========== */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 0.5rem;
+    }
+    .a5 {
+        width: 100%;
+        max-width: 430px; /* 手机端最大宽度，防止过宽 */
+        min-height: auto;
+        padding: 12px 8px;
+        gap: 12px; /* 手机端模块间距统一像素，稳定 */
+    }
+    .card, .notice-box {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        padding: 10px 8px;
+    }
+    /* 手机端强制文字不换行、行高稳定 */
+    .info-row, .id-desc, .bottom-text {
+        white-space: nowrap !important;
+        line-height: 1.5 !important;
+    }
+    /* 照片在手机端同步适配 */
+    .photo {
+        width: 50px;
+        height: 62px;
+        right: 10px;
+    }
+    /* 警告图标位置修正 */
+    .warn-icon {
+        left: 12px;
+        top: 12px;
+        width: 12px;
+        height: 12px;
+        font-size: 10px;
+    }
+    .notice-text {
+        margin-left: 20px;
+    }
+}
+
+/* 超小屏手机（<360px）微调，防止挤压 */
+@media screen and (max-width: 360px) {
+    .a5 {
+        padding: 8px 5px;
+    }
+    .info-row label {
+        width: 80px;
+    }
+    .qr {
+        width: 120px;
+        height: 120px;
+    }
+}
+</style>
+</head>
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;">
+<div class="a5">
+    <div class="card info">
+        <div class="title">广东省食品从业人员健康证明</div>
+        <div class="info-row">
+            <label>姓　名：</label>
+            <span>季泉华</span>
+        </div>
+        <div class="info-row">
+            <label>性　别：</label>
+            <span>男</span>
+        </div>
+        <div class="info-row">
+            <label>身份证：</label>
+            <span>362524199012212039</span>
+        </div>
+        <div class="id-desc">(或其它有效证明)</div>
+        <div class="info-row">
+            <label>体检单位：</label>
+            <span>深圳市宝安区人民医院</span>
+        </div>
+        <div class="info-row">
+            <label>体检日期：</label>
+            <span>2026年06月06日（有效期一年）</span>
+        </div>
+        <div class="bottom-text">已上传广东省食品从业人员健康证明管理平台</div>
+        <div class="photo">
+            <img src="jqh.jpg" />
+        </div>
+    </div>
+
+    <div class="card title">
+        <div class="main-title">
+            <span>广东省食品从业人员</span>
+            <span>健康证明</span>
+        </div>
+    </div>
+
+    <div class="notice-box">
+        <div class="warn-icon">!</div>
+        <div class="notice-text">
+            <span class="bold">有关说明：</span><br>
+            1. 按照信息化管理要求，平台仅供健康检查合格信息查询，不显示公章，有效期内全省通用。<br>
+            2. 目前实体证明申请的入口已经关闭，全面推广电子证，请广大从业人员和用人单位积极使用。<br>
+            3. 如对查询信息存疑，请与体检机构联系。
+        </div>
+    </div>
+
+    <div class="qr-title">防伪标识二维码</div>
+    <div class="qr">
+        <img src="{$qrcode_path}" alt="显示异常"/>
+    </div>
+</div>
+
+<script>
+// 禁止F12、Ctrl+U、Ctrl+S、Ctrl+C等快捷键
+document.onkeydown = function(e) {
+    let ev = e || window.event;
+    // F12 开发者工具
+    if(ev.keyCode === 123) return false;
+    // Ctrl+U 查看源码 / Ctrl+S 保存 / Ctrl+C 复制
+    if(ev.ctrlKey && (ev.keyCode === 83 || ev.keyCode === 67 || ev.keyCode === 85)){
+        return false;
+    }
+};
+</script>
+</body>
+</html>
