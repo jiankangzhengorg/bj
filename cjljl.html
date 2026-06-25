@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>残疾人证信息查询</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #d32f2f;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 30px;
+        }
+        .result-box {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .result-box h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 15px;
+            color: #555;
+            border-bottom: 1px dashed #eee;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item span:first-child {
+            color: #666;
+        }
+        .result-item span:last-child {
+            color: #222;
+            font-weight: 500;
+        }
+        .tip {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+            text-align: center;
+        }
+        @media (max-width: 480px) {
+            .content {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>有效期内</h1>
+        </div>
+        <div class="content">
+            <div class="result-box">
+                <h3>查询结果</h3>
+                <div class="result-item">
+                    <span>持证人姓名：</span>
+                    <span>吕金亮</span>
+                </div>
+                <div class="result-item">
+                    <span>残疾人证号：</span>
+                    <span> 37068519831127001322</span>
+                </div>
+                <div class="result-item">
+                    <span>残疾类型：</span>
+                    <span>二级听力残疾</span>
+                </div>
+                <div class="result-item">
+                    <span>签发日期：</span>
+                    <span>2026年06月10日</span>
+                </div>
+                <div class="result-item">
+                    <span>有效期：</span>
+                    <span>十年（至2036年06月10日）</span>
+                </div>
+            </div>
+
+            <p class="tip">残疾人证件联网查询</p>
+        </div>
+    </div>
+</body>
+</html>
