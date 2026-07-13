@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShuKeYun</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background: #f5f7fa;
+            padding: 40px 20px;
+        }
+        .site-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .site-title h2 {
+            font-size: 28px;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        .site-title p {
+            color: #888;
+            font-size: 15px;
+        }
+        .img-box {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 9cm);
+            justify-content: center;
+            gap: 35px;
+        }
+        /* 严格尺寸：宽9cm 高5.99cm 图片区域 */
+        .img-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card-pic {
+            width: 9cm;
+            height: 5.99cm;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .card-pic:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        .card-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        /* 图片名称文字 */
+        .pic-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+            white-space: nowrap;
+        }
+        /* 预览弹窗 */
+        .preview-modal{
+            position: fixed;
+            top:0;left:0;
+            width:100%;height:100%;
+            background:rgba(0,0,0,0.9);
+            display:none;
+            align-items:center;
+            justify-content:center;
+            z-index:999;
+        }
+        .preview-modal img{
+            max-width:90%;
+            max-height:90vh;
+            border-radius:6px;
+        }
+        .close-btn{
+            position:absolute;
+            top:30px;right:40px;
+            font-size:40px;
+            color:#fff;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="site-title">
+        <h2>ShuKeYun定制车牌全国包邮</h2>
+        <p>直接联系匿名通讯里的管理员-葫芦娃，1-3天全国邮</p>
+    </div>
+
+    <div class="img-box">
+        <div class="img-card">
+            <div class="card-pic">
+                <img src="tu1.jpg" alt="">
+            </div>
+            <div class="pic-name">样例1</div>
+        </div>
+        <div class="img-card">
+            <div class="card-pic">
+                <img src="tu2.jpg" alt="">
+            </div>
+            <div class="pic-name">样例2</div>
+        </div>
+        <div class="img-card">
+            <div class="card-pic">
+                <img src="tu3.jpg" alt="">
+            </div>
+            <div class="pic-name">样例3</div>
+        </div>
+        <div class="img-card">
+            <div class="card-pic">
+                <img src="tu4.jpg" alt="">
+            </div>
+            <div class="pic-name">样例4</div>
+        </div>
+        
+    </div>
+
+    <!-- 预览弹窗 -->
+    <div class="preview-modal" id="modal">
+        <span class="close-btn">&times;</span>
+        <img id="showImg" src="">
+    </div>
+
+<script>
+let modal = document.getElementById('modal');
+let showImg = document.getElementById('showImg');
+let imgs = document.querySelectorAll('.card-pic img');
+imgs.forEach(item=>{
+    item.onclick = function(){
+        modal.style.display = 'flex';
+        showImg.src = this.src;
+    }
+})
+document.querySelector('.close-btn').onclick = ()=>{
+    modal.style.display = 'none';
+}
+modal.onclick = e=>{
+    if(e.target === modal) modal.style.display = 'none';
+}
+</script>
+</body>
+</html>
